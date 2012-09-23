@@ -17,25 +17,9 @@ public class SummonAttendantAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Garage Attendant.
-	 */
-	private Attendant attendant;
-
-	/**
 	 * Logger
 	 */
 	private Logger logger = Logger.getAnonymousLogger();
-
-	/**
-	 * Creates Summon Attendant Action
-	 * 
-	 * @param attendant
-	 *            Attendant
-	 */
-	public SummonAttendantAction() {
-		Identity identity = Identity.getInstance();
-		this.attendant = identity.getAttendant();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -45,7 +29,10 @@ public class SummonAttendantAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		this.logger.info("Summoning Attendant");
-		String message = "Today's Attendant " + this.attendant.getName()
+		Identity identity = Identity.getInstance();
+		Attendant attendant = identity.getAttendant();
+
+		String message = "Today's Attendant " + attendant.getName()
 				+ " Has Been Summoned To this Kiosk.";
 		JOptionPane.showMessageDialog(null, message, "Summon Attendant",
 				JOptionPane.WARNING_MESSAGE);

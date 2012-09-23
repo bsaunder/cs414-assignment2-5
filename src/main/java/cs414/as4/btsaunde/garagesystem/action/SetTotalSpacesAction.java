@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
-import cs414.as4.btsaunde.garagesystem.view.Kiosk;
+import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
  * Action for Updating the Parking Fee.
@@ -50,9 +50,9 @@ public class SetTotalSpacesAction extends AbstractAction {
 				JOptionPane.showMessageDialog(null, "Maximum Space Count set to " + newCount,
 						"Set Parking Fee Success", JOptionPane.INFORMATION_MESSAGE);
 
-				// Refresh Menu...
-				Kiosk kiosk = Kiosk.getInstance();
-				kiosk.refresh();
+				// Refresh Dashboard...
+				DashboardWindow dashboard = DashboardWindow.getInstance();
+				dashboard.refreshFromConfig();
 			} catch (NumberFormatException nfe) {
 				this.logger.warning("Invalid Total Spaces Count Entered");
 				JOptionPane.showMessageDialog(null,

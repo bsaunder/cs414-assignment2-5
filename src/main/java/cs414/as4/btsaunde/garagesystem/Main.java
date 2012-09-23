@@ -9,7 +9,7 @@ import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as4.btsaunde.garagesystem.model.Attendant;
 import cs414.as4.btsaunde.garagesystem.security.Identity;
-import cs414.as4.btsaunde.garagesystem.view.Kiosk;
+import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
  * Main Class that Starts the Application.
@@ -35,7 +35,7 @@ public class Main {
 
 		Main.setLookAndFeel();
 
-		// Load Attendant Data
+		// Load Attendant Data & Setup Identity
 		Main.logger.info("Loading Attendant...");
 		Attendant attendant = new Attendant("Fred");
 		attendant.setPin(1234);
@@ -51,8 +51,9 @@ public class Main {
 		Main.logger.info("Attendant Loaded: " + attendant.getName()
 				+ " (PIN - " + attendant.getPin() + ")");
 
-		Kiosk garageKiosk = Kiosk.getInstance();
-		garageKiosk.setVisible(true);
+		// Start Dashboard
+		DashboardWindow dashboard = DashboardWindow.getInstance();
+		dashboard.setVisible(true);
 	}
 
 	/**
@@ -60,19 +61,20 @@ public class Main {
 	 */
 	private static void setLookAndFeel() {
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		} catch (Exception e) {
-		    // If Nimbus is not available, fall back to cross-platform
-		    try {
-		        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		    } catch (Exception ex) {
-		        // Ignore It
-		    }
+			// If Nimbus is not available, fall back to cross-platform
+			try {
+				UIManager.setLookAndFeel(UIManager
+						.getCrossPlatformLookAndFeelClassName());
+			} catch (Exception ex) {
+				// Ignore It
+			}
 		}
 	}
 

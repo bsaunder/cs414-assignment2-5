@@ -10,7 +10,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import cs414.as4.btsaunde.garagesystem.security.Identity;
-import cs414.as4.btsaunde.garagesystem.view.Kiosk;
+import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
  * Logs out the Current Identity.
@@ -54,9 +54,9 @@ public class LoginAction extends AbstractAction {
 				JOptionPane.showMessageDialog(null, "Attendant Logged In.",
 						"Login Success", JOptionPane.INFORMATION_MESSAGE);
 
-				// Refresh Menu...
-				Kiosk kiosk = Kiosk.getInstance();
-				kiosk.refresh();
+				// Refresh Dashboard...
+				DashboardWindow dashboard = DashboardWindow.getInstance();
+				dashboard.refreshFromConfig();
 			}
 		} else {
 			this.logger.warning("No PIN Entered");

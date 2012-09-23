@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
-import cs414.as4.btsaunde.garagesystem.view.Kiosk;
+import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
  * Action for Updating the Parking Fee.
@@ -45,14 +45,16 @@ public class SetParkingFeeAction extends AbstractAction {
 			try {
 				newFee = Double.valueOf(feeString);
 				config.setParkingFee(newFee);
-				
+
 				this.logger.info("15m Parking Fee Set: " + newFee);
-				JOptionPane.showMessageDialog(null, "15 Minute Parking Fee Set to $" + newFee,
-						"Set Parking Fee Success", JOptionPane.INFORMATION_MESSAGE);
-				
-				// Refresh Menu...
-				Kiosk kiosk = Kiosk.getInstance();
-				kiosk.refresh();
+				JOptionPane.showMessageDialog(null,
+						"15 Minute Parking Fee Set to $" + newFee,
+						"Set Parking Fee Success",
+						JOptionPane.INFORMATION_MESSAGE);
+
+				// Refresh Dashboard...
+				DashboardWindow dashboard = DashboardWindow.getInstance();
+				dashboard.refreshFromConfig();
 			} catch (NumberFormatException nfe) {
 				this.logger.warning("Invalid Parking Fee Entered");
 				JOptionPane.showMessageDialog(null,

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 
 import cs414.as4.btsaunde.garagesystem.security.Identity;
-import cs414.as4.btsaunde.garagesystem.view.Kiosk;
+import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
  * Logs out the Current Identity.
@@ -39,10 +39,10 @@ public class LogoutAction extends AbstractAction {
 		this.logger.info("Logging Out Attendant");
 		Identity identity = Identity.getInstance();
 		identity.logout();
-		
-		// Refresh Menu...
-		Kiosk kiosk = Kiosk.getInstance();
-		kiosk.refresh();
+
+		// Refresh Dashboard...
+		DashboardWindow dashboard = DashboardWindow.getInstance();
+		dashboard.refreshFromConfig();
 	}
 
 }

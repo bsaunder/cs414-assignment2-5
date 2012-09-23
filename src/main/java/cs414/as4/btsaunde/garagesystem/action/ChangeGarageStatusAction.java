@@ -10,7 +10,7 @@ import javax.swing.AbstractAction;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
-import cs414.as4.btsaunde.garagesystem.view.Kiosk;
+import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
  * Changes the Status of the Garage.
@@ -57,9 +57,9 @@ public class ChangeGarageStatusAction extends AbstractAction {
 
 		this.logger.info("Garage Status Set To: " + this.status);
 
-		// Refresh Menu...
-		Kiosk kiosk = Kiosk.getInstance();
-		kiosk.refresh();
+		// Refresh Dashboard...
+		DashboardWindow dashboard = DashboardWindow.getInstance();
+		dashboard.refreshFromConfig();
 	}
 
 }
