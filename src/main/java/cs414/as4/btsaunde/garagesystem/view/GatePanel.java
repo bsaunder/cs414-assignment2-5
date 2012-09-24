@@ -43,6 +43,7 @@ public class GatePanel extends JPanel implements ActionListener {
 		this.btnDriveThroughGate.setEnabled(false);
 		this.btnDriveThroughGate
 				.setActionCommand(GatePanel.DRIVE_THROUGH_COMMAND);
+		this.btnDriveThroughGate.addActionListener(this);
 		add(this.btnDriveThroughGate, BorderLayout.SOUTH);
 
 		this.lblStatus = new JLabel("Gate is CLOSED");
@@ -82,6 +83,10 @@ public class GatePanel extends JPanel implements ActionListener {
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(GatePanel.DRIVE_THROUGH_COMMAND)) {
 			this.closeGate();
+			
+			// Reset Dashboard
+			DashboardWindow dashboard = DashboardWindow.getInstance();
+			dashboard.reset();
 		}
 	}
 

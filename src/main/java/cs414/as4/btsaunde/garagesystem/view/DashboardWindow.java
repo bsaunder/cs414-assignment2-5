@@ -1,5 +1,6 @@
 package cs414.as4.btsaunde.garagesystem.view;
 
+import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
@@ -12,10 +13,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import cs414.as4.btsaunde.garagesystem.action.ChangeGarageStatusAction;
 import cs414.as4.btsaunde.garagesystem.action.LoginAction;
 import cs414.as4.btsaunde.garagesystem.action.LogoutAction;
+import cs414.as4.btsaunde.garagesystem.action.RetrieveTicketAction;
 import cs414.as4.btsaunde.garagesystem.action.SetParkingFeeAction;
 import cs414.as4.btsaunde.garagesystem.action.SetTotalSpacesAction;
 import cs414.as4.btsaunde.garagesystem.action.ShutdownAction;
@@ -23,7 +26,6 @@ import cs414.as4.btsaunde.garagesystem.action.SummonAttendantAction;
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as4.btsaunde.garagesystem.security.Identity;
-import javax.swing.border.EtchedBorder;
 
 public class DashboardWindow extends JFrame {
 
@@ -33,14 +35,28 @@ public class DashboardWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Retrieve Ticket Action Command.
+	 */
+	public static final String RETRIEVE_TICKET_COMMAND = "RetrieveTicket";
+
+	/**
 	 * Singleton Instance.
 	 */
 	private static DashboardWindow instance;
 
 	/**
+	 * Start Panel
+	 */
+	private static String START_PANEL = "StartPanel";
+
+	/**
+	 * Retrieve Ticket Panel
+	 */
+	private static String RETRIEVE_TICKET_PANEL = "RetrieveTicketPanel";
+
+	/**
 	 * Logger
 	 */
-	@SuppressWarnings("unused")
 	private Logger logger = Logger.getAnonymousLogger();
 
 	/*
@@ -60,6 +76,7 @@ public class DashboardWindow extends JFrame {
 	private JRadioButtonMenuItem rdbtnmntmClosed;
 	private SignPanel signPanel;
 	private GatePanel gatePanel;
+	private JPanel contentPanel;
 
 	/**
 	 * Get the Dashboard Instance.
@@ -90,11 +107,11 @@ public class DashboardWindow extends JFrame {
 	 * Initialize Dashboard.
 	 */
 	private void intialize() {
-		setResizable(false);
-		setTitle("Saunders Parking Systems");
-		setAlwaysOnTop(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(25, 25, 500, 500);
+		this.setResizable(false);
+		this.setTitle("Saunders Parking Systems");
+		this.setAlwaysOnTop(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(25, 25, 500, 500);
 	}
 
 	/**
@@ -107,19 +124,28 @@ public class DashboardWindow extends JFrame {
 		this.contentPane.setLayout(null);
 
 		this.signPanel = new SignPanel();
-		this.signPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		this.signPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null,
+				null));
 		this.signPanel.setBounds(5, 5, 240, 100);
 		this.contentPane.add(this.signPanel);
 
 		this.gatePanel = new GatePanel();
-		this.gatePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		this.gatePanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null,
+				null));
 		this.gatePanel.setBounds(250, 5, 240, 100);
 		this.contentPane.add(this.gatePanel);
 
-		JPanel contentPanel = new JPanel();
-		contentPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		contentPanel.setBounds(5, 116, 485, 311);
-		this.contentPane.add(contentPanel);
+		this.contentPanel = new JPanel();
+		this.contentPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
+				null, null));
+		this.contentPanel.setBounds(5, 116, 485, 311);
+		this.contentPanel.setLayout(new CardLayout(0, 0));
+
+		this.contentPanel.add(new StartPanel(), DashboardWindow.START_PANEL);
+		this.contentPanel.add(new RetrieveTicketPanel(),
+				DashboardWindow.RETRIEVE_TICKET_PANEL);
+
+		this.contentPane.add(this.contentPanel);
 
 		JPanel statusPanel = new JPanel();
 		statusPanel.setBounds(0, 433, 494, 13);
@@ -146,8 +172,9 @@ public class DashboardWindow extends JFrame {
 		mnSystem.setMnemonic('S');
 		menuBar.add(mnSystem);
 
-		this.mntmRetrieveParkingTicket = new JMenuItem(
-				"Retrieve Parking Ticket");
+		this.mntmRetrieveParkingTicket = new JMenuItem();
+		this.mntmRetrieveParkingTicket.setAction(new RetrieveTicketAction());
+		this.mntmRetrieveParkingTicket.setText("Retrieve Parking Ticket");
 		this.mntmRetrieveParkingTicket.setMnemonic('R');
 		mnSystem.add(this.mntmRetrieveParkingTicket);
 
@@ -162,6 +189,8 @@ public class DashboardWindow extends JFrame {
 		this.mntmLogin = new JMenuItem("Login");
 		this.mntmLogin.setMnemonic('L');
 		mnAdmin.add(this.mntmLogin);
+		
+		mnAdmin.addSeparator();
 
 		this.mnSetGarageStatus = new JMenu("Set Garage Status");
 		this.mnSetGarageStatus.setMnemonic('S');
@@ -203,6 +232,8 @@ public class DashboardWindow extends JFrame {
 
 		JMenuItem mntmReport = new JMenuItem("Report 1");
 		this.mnGenerateReport.add(mntmReport);
+		
+		mnAdmin.addSeparator();
 
 		this.mntmShutdownKiosk = new JMenuItem();
 		this.mntmShutdownKiosk.setAction(new ShutdownAction());
@@ -226,6 +257,11 @@ public class DashboardWindow extends JFrame {
 	 */
 	public void refreshFromConfig() {
 		GarageConfiguration config = GarageConfiguration.getInstance();
+
+		// Set Status Based on Spaces
+		if (config.getAvailableSpaces() < 1) {
+			config.setStatus(GarageStatus.FULL);
+		}
 
 		// Update Menu Items Based on Garage Status
 		if (config.getStatus() == GarageStatus.OPEN) {
@@ -275,7 +311,7 @@ public class DashboardWindow extends JFrame {
 		this.lblSpacesRemaining.setText("Remaining Spaces: "
 				+ config.getAvailableSpaces());
 		this.lblGarageStatus.setText("Garage Status: " + config.getStatus());
-		
+
 		// Refresh Sign Panel
 		this.signPanel.updateSign();
 	}
@@ -297,6 +333,23 @@ public class DashboardWindow extends JFrame {
 	public GatePanel getGatePanel() {
 		return this.gatePanel;
 	}
-	
-	
+
+	/**
+	 * Starts Retrieve Ticket Workflow.
+	 */
+	public void retrieveTicket() {
+		this.logger.info("Starting Retrieve Ticket Scenario");
+		CardLayout cardLayout = (CardLayout) this.contentPanel.getLayout();
+		cardLayout.show(this.contentPanel,
+				DashboardWindow.RETRIEVE_TICKET_PANEL);
+	}
+
+	/**
+	 * Resets Back to Main Start Panel.
+	 */
+	public void reset() {
+		this.logger.info("Resetting to Main Scenario Screen");
+		CardLayout cardLayout = (CardLayout) this.contentPanel.getLayout();
+		cardLayout.show(this.contentPanel, DashboardWindow.START_PANEL);
+	}
 }

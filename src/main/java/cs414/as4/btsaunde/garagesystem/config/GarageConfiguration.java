@@ -3,6 +3,7 @@
  */
 package cs414.as4.btsaunde.garagesystem.config;
 
+import cs414.as4.btsaunde.garagesystem.dao.TicketDao;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
 
 /**
@@ -17,14 +18,14 @@ public class GarageConfiguration {
 	private static GarageConfiguration instance;
 
 	/**
-	 * Number of Spaces in the Garage.
+	 * Ticket DAO.
 	 */
-	private Integer totalSpaces;
+	private TicketDao ticketDao;
 
 	/**
 	 * Number of Spaces in the Garage.
 	 */
-	private Integer availableSpaces;
+	private Integer totalSpaces;
 
 	/**
 	 * 15min Parking Fee
@@ -35,6 +36,13 @@ public class GarageConfiguration {
 	 * Garage Status.
 	 */
 	private GarageStatus status;
+	
+	/**
+	 * Singleton Constructor.
+	 */
+	private GarageConfiguration(){
+		this.ticketDao = TicketDao.getInstance();
+	}
 
 	/**
 	 * Get an Instance of the Current Garage Configuration.
@@ -99,8 +107,8 @@ public class GarageConfiguration {
 	 * @return the availableSpaces
 	 */
 	public Integer getAvailableSpaces() {
-		// TODO: Update this to Return Actual Number of Available Spaces
-		return this.totalSpaces;
+		int usedSpaces = this.ticketDao.size();
+		return this.totalSpaces - usedSpaces;
 	}
 
 	/**
