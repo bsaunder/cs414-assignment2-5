@@ -5,9 +5,11 @@ package cs414.as4.btsaunde.garagesystem.manager;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as4.btsaunde.garagesystem.dao.TicketDao;
 import cs414.as4.btsaunde.garagesystem.model.Ticket;
 
 /**
@@ -17,6 +19,15 @@ import cs414.as4.btsaunde.garagesystem.model.Ticket;
  *
  */
 public class TicketManagerTest {
+	
+	/**
+	 * Clear the DAO Before the Tests.
+	 */
+	@Before
+	public void clearDao(){
+		TicketDao dao = TicketDao.getInstance();
+		dao.clear();
+	}
 
 	/**
 	 * Tests TicketManager Creation.
@@ -78,5 +89,8 @@ public class TicketManagerTest {
 		// then
 		Assert.assertNull(ticket);
 	}
+	
+	// TODO verifyTicket
+	// TODO getTicket
 
 }

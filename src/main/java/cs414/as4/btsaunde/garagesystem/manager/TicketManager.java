@@ -1,7 +1,6 @@
 package cs414.as4.btsaunde.garagesystem.manager;
 
 import java.util.Date;
-import java.util.UUID;
 
 import cs414.as4.btsaunde.garagesystem.dao.EventDao;
 import cs414.as4.btsaunde.garagesystem.dao.TicketDao;
@@ -59,22 +58,46 @@ public class TicketManager {
 		Date issued = new Date();
 		ticket.setTimeIssued(issued.getTime());
 
-		String id = UUID.randomUUID().toString();
+		// String id = UUID.randomUUID().toString();
+		String id = "SPS" + this.ticketDao.size() + 1;
 		ticket.setTicketId(id);
 
 		// Save Ticket
 		boolean saved = this.ticketDao.add(ticket);
 
-		if(saved){
+		if (saved) {
 			// Log Ticket Event
 			Event event = new Event();
 			event.setTicket(ticket);
 
 			this.eventDao.add(event);
-			
+
 			return ticket;
-		}else{
+		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Verifies that a TicketID Exists
+	 * 
+	 * @param ticketId
+	 *            Ticket ID to Verify
+	 * @return True if the ID is Valid
+	 */
+	public boolean verifyTicketId(String ticketId) {
+		Ticket ticket = this.ticketDao.findTicketById(ticketId);
+		return ticket != null;
+	}
+
+	/**
+	 * Gets the Ticket with the Specified ID.
+	 * 
+	 * @param ticketId
+	 *            Ticket ID to Get
+	 * @return Ticket or null if Ticket Not Found.
+	 */
+	public Ticket getTicket(String ticketId) {
+		return this.ticketDao.findTicketById(ticketId);
 	}
 }

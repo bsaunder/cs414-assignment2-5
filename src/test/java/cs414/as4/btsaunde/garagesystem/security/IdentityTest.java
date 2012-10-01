@@ -38,7 +38,15 @@ public class IdentityTest {
 	 */
 	@Test
 	public void ifNewInstanceCreatedThenPass() {
-		Assert.fail("Not Yet Impemented");
+		// given
+		Attendant attendant = new Attendant("Fred");
+		attendant.setPin(1234);
+
+		// when
+		Identity identity = Identity.getNewInstance(attendant);
+
+		// then
+		Assert.assertNotNull(identity);
 	}
 
 	/**
@@ -46,7 +54,18 @@ public class IdentityTest {
 	 */
 	@Test
 	public void ifSingletonThenPass() {
-		Assert.fail("Not Yet Impemented");
+		// given
+		Attendant attendant = new Attendant("Fred");
+		attendant.setPin(1234);
+
+		// when
+		Identity identity = Identity.getNewInstance(attendant);
+		Identity identity2 = Identity.getInstance();
+
+		// then
+		Assert.assertNotNull(identity);
+		Assert.assertNotNull(identity2);
+		Assert.assertEquals(identity, identity2);
 	}
 
 	/**
@@ -54,14 +73,36 @@ public class IdentityTest {
 	 */
 	@Test
 	public void testSetters() {
-		Assert.fail("Not Yet Impemented");
+		// given
+		Attendant attendant = new Attendant("Fred");
+		attendant.setPin(1234);
+		Identity identity = Identity.getNewInstance(attendant);
+
+		// when
+		Attendant attendant2 = new Attendant("Bob");
+		attendant2.setPin(4567);
+
+		identity.setAttendant(attendant2);
+
+		// then
+		Assert.assertEquals(attendant2, identity.getAttendant());
 	}
 
 	/**
 	 * Tests Logging in the Valid Password
 	 */
 	public void ifValidCredentialsThenAuthenticate() {
-		Assert.fail("Not Yet Impemented");
+		// given
+		Attendant attendant = new Attendant("Fred");
+		attendant.setPin(1234);
+		Identity identity = Identity.getNewInstance(attendant);
+
+		// when
+		Boolean result = identity.login("1234");
+
+		// then
+		Assert.assertTrue(identity.isAuthenticated());
+		Assert.assertTrue(result);
 	}
 
 	/**
@@ -69,7 +110,17 @@ public class IdentityTest {
 	 */
 	@Test
 	public void ifInvalidCredentialsThenFail() {
-		Assert.fail("Not Yet Impemented");
+		// given
+		Attendant attendant = new Attendant("Fred");
+		attendant.setPin(1234);
+		Identity identity = Identity.getNewInstance(attendant);
+
+		// when
+		Boolean result = identity.login("4561");
+
+		// then
+		Assert.assertFalse(identity.isAuthenticated());
+		Assert.assertFalse(result);
 	}
 
 	/**
@@ -77,6 +128,18 @@ public class IdentityTest {
 	 */
 	@Test
 	public void ifLoggedOutThenPass() {
-		Assert.fail("Not Yet Impemented");
+		// given
+		Attendant attendant = new Attendant("Fred");
+		attendant.setPin(1234);
+		Identity identity = Identity.getNewInstance(attendant);
+
+		identity.login("1234");
+		Assert.assertTrue(identity.isAuthenticated());
+
+		// when
+		identity.logout();
+
+		// then
+		Assert.assertFalse(identity.isAuthenticated());
 	}
 }

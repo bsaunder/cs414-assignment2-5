@@ -55,6 +55,11 @@ public class DashboardWindow extends JFrame {
 	private static String RETRIEVE_TICKET_PANEL = "RetrieveTicketPanel";
 
 	/**
+	 * Pay For Ticket Panel
+	 */
+	private static String PAY_FOR_TICKET_PANEL = "PayForTicketPanel";
+
+	/**
 	 * Logger
 	 */
 	private Logger logger = Logger.getAnonymousLogger();
@@ -77,6 +82,9 @@ public class DashboardWindow extends JFrame {
 	private SignPanel signPanel;
 	private GatePanel gatePanel;
 	private JPanel contentPanel;
+	private RetrieveTicketPanel retrieveTicketPanel;
+	private PayForTicketPanel payForTicketPanel;
+	private StartPanel startPanel;
 
 	/**
 	 * Get the Dashboard Instance.
@@ -141,14 +149,21 @@ public class DashboardWindow extends JFrame {
 		this.contentPanel.setBounds(5, 116, 485, 311);
 		this.contentPanel.setLayout(new CardLayout(0, 0));
 
-		this.contentPanel.add(new StartPanel(), DashboardWindow.START_PANEL);
-		this.contentPanel.add(new RetrieveTicketPanel(),
+		this.startPanel = new StartPanel();
+		this.contentPanel.add(this.startPanel, DashboardWindow.START_PANEL);
+
+		this.retrieveTicketPanel = new RetrieveTicketPanel();
+		this.contentPanel.add(this.retrieveTicketPanel,
 				DashboardWindow.RETRIEVE_TICKET_PANEL);
+
+		this.payForTicketPanel = new PayForTicketPanel();
+		this.contentPanel.add(this.payForTicketPanel,
+				DashboardWindow.PAY_FOR_TICKET_PANEL);
 
 		this.contentPane.add(this.contentPanel);
 
 		JPanel statusPanel = new JPanel();
-		statusPanel.setBounds(0, 433, 494, 13);
+		statusPanel.setBounds(0, 429, 494, 17);
 		this.contentPane.add(statusPanel);
 		statusPanel.setLayout(null);
 
@@ -189,7 +204,7 @@ public class DashboardWindow extends JFrame {
 		this.mntmLogin = new JMenuItem("Login");
 		this.mntmLogin.setMnemonic('L');
 		mnAdmin.add(this.mntmLogin);
-		
+
 		mnAdmin.addSeparator();
 
 		this.mnSetGarageStatus = new JMenu("Set Garage Status");
@@ -232,7 +247,7 @@ public class DashboardWindow extends JFrame {
 
 		JMenuItem mntmReport = new JMenuItem("Report 1");
 		this.mnGenerateReport.add(mntmReport);
-		
+
 		mnAdmin.addSeparator();
 
 		this.mntmShutdownKiosk = new JMenuItem();
@@ -257,6 +272,11 @@ public class DashboardWindow extends JFrame {
 	 */
 	public void refreshFromConfig() {
 		GarageConfiguration config = GarageConfiguration.getInstance();
+
+		// Update Status Based on Spaces
+		if (config.getAvailableSpaces() < 1) {
+			config.setStatus(GarageStatus.FULL);
+		}
 
 		// Update Menu Items Based on Garage Status
 		if (config.getStatus() == GarageStatus.OPEN) {
@@ -309,6 +329,9 @@ public class DashboardWindow extends JFrame {
 
 		// Refresh Sign Panel
 		this.signPanel.updateSign();
+
+		// Update Start Panel
+		this.startPanel.updateButtonStatus();
 	}
 
 	/**
@@ -334,9 +357,29 @@ public class DashboardWindow extends JFrame {
 	 */
 	public void retrieveTicket() {
 		this.logger.info("Starting Retrieve Ticket Scenario");
+
+		CardLayout panelLayout = (CardLayout) this.retrieveTicketPanel
+				.getLayout();
+		panelLayout.first(this.retrieveTicketPanel);
+
 		CardLayout cardLayout = (CardLayout) this.contentPanel.getLayout();
 		cardLayout.show(this.contentPanel,
 				DashboardWindow.RETRIEVE_TICKET_PANEL);
+	}
+
+	/**
+	 * Starts Retrieve Ticket Workflow.
+	 */
+	public void payForTicket() {
+		this.logger.info("Starting Pay For Ticket Scenario");
+
+		CardLayout panelLayout = (CardLayout) this.payForTicketPanel
+				.getLayout();
+		panelLayout.first(this.payForTicketPanel);
+
+		CardLayout cardLayout = (CardLayout) this.contentPanel.getLayout();
+		cardLayout
+				.show(this.contentPanel, DashboardWindow.PAY_FOR_TICKET_PANEL);
 	}
 
 	/**
