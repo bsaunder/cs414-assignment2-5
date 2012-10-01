@@ -47,11 +47,13 @@ public class TicketManager {
 	}
 
 	/**
-	 * Create New Ticket and Log Record Event Information.
+	 * Create New Ticket and Log Record Event Information. Returns null if
+	 * Ticket was Not Created.
 	 * 
-	 * @return New Ticket
+	 * @return New Ticket or null
 	 */
 	public Ticket createNewTicket() {
+		// TODO Refactor This. Dont Like it.
 		Ticket ticket = new Ticket();
 
 		Date issued = new Date();
@@ -61,14 +63,18 @@ public class TicketManager {
 		ticket.setTicketId(id);
 
 		// Save Ticket
-		this.ticketDao.add(ticket);
+		boolean saved = this.ticketDao.add(ticket);
 
-		// Log Ticket Event
-		Event event = new Event();
-		event.setTicket(ticket);
+		if(saved){
+			// Log Ticket Event
+			Event event = new Event();
+			event.setTicket(ticket);
 
-		this.eventDao.add(event);
-
-		return ticket;
+			this.eventDao.add(event);
+			
+			return ticket;
+		}else{
+			return null;
+		}
 	}
 }

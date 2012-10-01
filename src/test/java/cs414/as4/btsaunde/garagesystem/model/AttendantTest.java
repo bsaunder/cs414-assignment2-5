@@ -1,4 +1,4 @@
-package cs414.as4.btsaunde.garagesystem.actors;
+package cs414.as4.btsaunde.garagesystem.model;
 
 import junit.framework.Assert;
 

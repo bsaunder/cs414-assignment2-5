@@ -4,6 +4,12 @@ import java.util.LinkedList;
 
 import cs414.as4.btsaunde.garagesystem.model.Event;
 
+/**
+ * Event DAO to Store Events.
+ * 
+ * @author Bryan Saunders <btsaunde@gmail.com>
+ *
+ */
 public class EventDao extends LinkedList<Event> {
 	
 	/**
@@ -23,9 +29,9 @@ public class EventDao extends LinkedList<Event> {
 	}
 
 	/**
-	 * Get Ticket DAO.
+	 * Get Event DAO.
 	 * 
-	 * @return Ticket DAO
+	 * @return Event DAO
 	 */
 	public static EventDao getInstance() {
 		if (EventDao.instance == null) {

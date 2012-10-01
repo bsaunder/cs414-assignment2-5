@@ -258,11 +258,6 @@ public class DashboardWindow extends JFrame {
 	public void refreshFromConfig() {
 		GarageConfiguration config = GarageConfiguration.getInstance();
 
-		// Set Status Based on Spaces
-		if (config.getAvailableSpaces() < 1) {
-			config.setStatus(GarageStatus.FULL);
-		}
-
 		// Update Menu Items Based on Garage Status
 		if (config.getStatus() == GarageStatus.OPEN) {
 			this.mntmRetrieveParkingTicket.setEnabled(true);

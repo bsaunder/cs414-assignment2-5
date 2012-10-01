@@ -2,6 +2,7 @@ package cs414.as4.btsaunde.garagesystem.dao;
 
 import java.util.LinkedList;
 
+import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as4.btsaunde.garagesystem.model.Ticket;
 
 public class TicketDao extends LinkedList<Ticket> {
@@ -34,6 +35,20 @@ public class TicketDao extends LinkedList<Ticket> {
 		}
 
 		return TicketDao.instance;
+	}
+	
+	/**
+	 * Override the Save method to make sure we cant add Tickets when there are no spaces left.
+	 */
+	@Override
+	public boolean add(Ticket ticket) {
+		GarageConfiguration config = GarageConfiguration.getInstance();
+		Integer total = config.getTotalSpaces();
+		if(this.size() >= total){
+			return false;
+		}else{
+			return super.add(ticket);
+		}
 	}
 
 }
