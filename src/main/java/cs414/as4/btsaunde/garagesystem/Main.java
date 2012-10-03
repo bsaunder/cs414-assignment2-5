@@ -1,5 +1,6 @@
 package cs414.as4.btsaunde.garagesystem;
 
+import java.awt.EventQueue;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
@@ -43,9 +44,21 @@ public class Main {
 		Main.logger.info("Attendant Loaded: " + attendant.getName()
 				+ " (PIN - " + attendant.getPin() + ")");
 
+		// Load Test Data
+		DataLoader loader = new DataLoader();
+		loader.loadData(45);
+
 		// Start Dashboard
-		DashboardWindow dashboard = DashboardWindow.getInstance();
-		dashboard.setVisible(true);
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					DashboardWindow dashboard = DashboardWindow.getInstance();
+					dashboard.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**

@@ -18,6 +18,7 @@ import javax.swing.border.EtchedBorder;
 import cs414.as4.btsaunde.garagesystem.action.ChangeGarageStatusAction;
 import cs414.as4.btsaunde.garagesystem.action.LoginAction;
 import cs414.as4.btsaunde.garagesystem.action.LogoutAction;
+import cs414.as4.btsaunde.garagesystem.action.OpenDataViewerAction;
 import cs414.as4.btsaunde.garagesystem.action.RetrieveTicketAction;
 import cs414.as4.btsaunde.garagesystem.action.SetParkingFeeAction;
 import cs414.as4.btsaunde.garagesystem.action.SetTotalSpacesAction;
@@ -134,7 +135,7 @@ public class DashboardWindow extends JFrame {
 	private void buildPanels() {
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(this.contentPane);
+		this.setContentPane(this.contentPane);
 		this.contentPane.setLayout(null);
 
 		this.signPanel = new SignPanel();
@@ -251,8 +252,11 @@ public class DashboardWindow extends JFrame {
 		this.mnGenerateReport.setMnemonic('G');
 		mnAdmin.add(this.mnGenerateReport);
 
-		JMenuItem mntmReport = new JMenuItem("Report 1");
-		this.mnGenerateReport.add(mntmReport);
+		JMenuItem mntmOpenDataViewer = new JMenuItem();
+		mntmOpenDataViewer.setAction(new OpenDataViewerAction());
+		mntmOpenDataViewer.setText("Open Data Viewer");
+		mntmOpenDataViewer.setMnemonic('D');
+		this.mnGenerateReport.add(mntmOpenDataViewer);
 
 		mnAdmin.addSeparator();
 

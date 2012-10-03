@@ -69,7 +69,7 @@ public class RetrieveTicketPanel extends JPanel implements ActionListener {
 		JButton btnTakeTicket = new JButton("Take Ticket");
 		btnTakeTicket.setActionCommand(RetrieveTicketPanel.TAKE_TICKET_COMMAND);
 		btnTakeTicket.addActionListener(this);
-		btnTakeTicket.setBounds(197, 141, 90, 28);
+		btnTakeTicket.setBounds(171, 132, 143, 47);
 		startPanel.add(btnTakeTicket);
 	}
 
