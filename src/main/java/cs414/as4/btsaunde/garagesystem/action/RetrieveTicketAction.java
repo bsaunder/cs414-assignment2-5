@@ -27,7 +27,7 @@ public class RetrieveTicketAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		DashboardWindow dashboard = DashboardWindow.getInstance();
-		dashboard.retrieveTicket();
+		dashboard.startRetrieveTicket();
 	}
 
 }

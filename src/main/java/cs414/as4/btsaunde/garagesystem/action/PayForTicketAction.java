@@ -27,7 +27,7 @@ public class PayForTicketAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		DashboardWindow dashboard = DashboardWindow.getInstance();
-		dashboard.payForTicket();
+		dashboard.startPayForTicket();
 	}
 
 }

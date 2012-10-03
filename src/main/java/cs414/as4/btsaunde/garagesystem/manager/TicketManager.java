@@ -4,6 +4,7 @@ import java.util.Date;
 
 import cs414.as4.btsaunde.garagesystem.dao.EventDao;
 import cs414.as4.btsaunde.garagesystem.dao.TicketDao;
+import cs414.as4.btsaunde.garagesystem.enums.PaymentType;
 import cs414.as4.btsaunde.garagesystem.model.Event;
 import cs414.as4.btsaunde.garagesystem.model.Ticket;
 
@@ -69,6 +70,7 @@ public class TicketManager {
 			// Log Ticket Event
 			Event event = new Event();
 			event.setTicket(ticket);
+			event.setTimeIssued(issued);
 
 			this.eventDao.add(event);
 
@@ -99,5 +101,50 @@ public class TicketManager {
 	 */
 	public Ticket getTicket(String ticketId) {
 		return this.ticketDao.findTicketById(ticketId);
+	}
+
+	/**
+	 * Finalizes a Ticket by Updating its Event and Removing it from the
+	 * Database.
+	 * 
+	 * @param ticket
+	 *            Ticket to Update
+	 * @param paymentType
+	 *            Payment Type
+	 * @param totalFee
+	 *            Total Fee
+	 * @param timePaid
+	 *            Time Ticket was Paid
+	 */
+	public void finalizeTicket(Ticket ticket, PaymentType paymentType,
+			Double totalFee, Long timePaid) {
+		
+		Event event = this.eventDao.findEventByTicket(ticket);
+		
+		event.setTimePaid(timePaid);
+		event.setTotalFee(totalFee);
+		event.setPaymentType(paymentType);
+		
+		this.ticketDao.remove(ticket);
+	}
+	
+	/**
+	 * Finalizes a Ticket by Updating its Event and Removing it from the
+	 * Database.
+	 * 
+	 * @param ticketId
+	 *            TicketID to Update
+	 * @param paymentType
+	 *            Payment Type
+	 * @param totalFee
+	 *            Total Fee
+	 * @param timePaid
+	 *            Time Ticket was Paid
+	 */
+	public void finalizeTicket(String ticketId, PaymentType paymentType,
+			Double totalFee, Long timePaid) {
+		
+		Ticket ticket = this.getTicket(ticketId);
+		this.finalizeTicket(ticket, paymentType, totalFee, timePaid);
 	}
 }

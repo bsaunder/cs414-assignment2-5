@@ -45,9 +45,12 @@ public class StartPanel extends JPanel {
 	/**
 	 * Enables/Disalbes Buttons Based on Garage Status.
 	 */
-	public void updateButtonStatus() {
+	public void update() {
 		GarageConfiguration config = GarageConfiguration.getInstance();
-		if (config.getStatus() != GarageStatus.OPEN) {
+		
+		if (config.getStatus() == GarageStatus.OPEN) {
+			this.btnRetrieveTicket.setEnabled(true);
+		}else{
 			this.btnRetrieveTicket.setEnabled(false);
 		}
 	}

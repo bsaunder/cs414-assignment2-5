@@ -5,6 +5,8 @@ package cs414.as4.btsaunde.garagesystem.config;
 
 import cs414.as4.btsaunde.garagesystem.dao.TicketDao;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
+import cs414.as4.btsaunde.garagesystem.model.Gate;
+import cs414.as4.btsaunde.garagesystem.model.Sign;
 
 /**
  * @author Bryan Saunders <btsaunde@gmail.com>
@@ -36,12 +38,35 @@ public class GarageConfiguration {
 	 * Garage Status.
 	 */
 	private GarageStatus status;
-	
+
+	/**
+	 * Garage Gate.
+	 */
+	private Gate gate;
+
+	/**
+	 * Garage Sign.
+	 */
+	private Sign sign;
+
 	/**
 	 * Singleton Constructor.
 	 */
-	private GarageConfiguration(){
+	private GarageConfiguration() {
 		this.ticketDao = TicketDao.getInstance();
+
+		// Set Defaults
+		this.parkingFee = 1.00;
+		this.totalSpaces = 1;
+		this.status = GarageStatus.OPEN;
+
+		// Create Gate
+		this.gate = new Gate();
+		this.gate.closeGate();
+
+		// Create Sign
+		this.sign = new Sign();
+		this.sign.setText(this.status.toString());
 	}
 
 	/**
@@ -92,13 +117,7 @@ public class GarageConfiguration {
 	 *            the status to set
 	 */
 	public void setStatus(GarageStatus status) {
-		// If Setting the Status to Open & The Current Status is Full, Leave as
-		// Full
-		if (status == GarageStatus.OPEN && this.status == GarageStatus.FULL) {
-			this.status = GarageStatus.FULL;
-		} else {
-			this.status = status;
-		}
+		this.status = status;
 	}
 
 	/**
@@ -128,6 +147,43 @@ public class GarageConfiguration {
 	 */
 	public void setParkingFee(Double parkingFee) {
 		this.parkingFee = parkingFee;
+	}
+
+	/**
+	 * Get the gate.
+	 * 
+	 * @return the gate
+	 */
+	public Gate getGate() {
+		return this.gate;
+	}
+
+	/**
+	 * Set the gate.
+	 * 
+	 * @param gate
+	 *            the gate to set
+	 */
+	public void setGate(Gate gate) {
+		this.gate = gate;
+	}
+
+	/**
+	 * Get the sign.
+	 * 
+	 * @return the sign
+	 */
+	public Sign getSign() {
+		return this.sign;
+	}
+
+	/**
+	 * Set the sign.
+	 * 
+	 * @param sign the sign to set
+	 */
+	public void setSign(Sign sign) {
+		this.sign = sign;
 	}
 
 }

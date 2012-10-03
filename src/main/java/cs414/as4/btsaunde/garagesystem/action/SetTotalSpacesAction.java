@@ -52,7 +52,7 @@ public class SetTotalSpacesAction extends AbstractAction {
 
 				// Refresh Dashboard...
 				DashboardWindow dashboard = DashboardWindow.getInstance();
-				dashboard.refreshFromConfig();
+				dashboard.update();
 			} catch (NumberFormatException nfe) {
 				this.logger.warning("Invalid Total Spaces Count Entered");
 				JOptionPane.showMessageDialog(null,

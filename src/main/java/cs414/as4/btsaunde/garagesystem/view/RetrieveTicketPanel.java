@@ -12,9 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as4.btsaunde.garagesystem.manager.TicketManager;
+import cs414.as4.btsaunde.garagesystem.model.Gate;
+import cs414.as4.btsaunde.garagesystem.model.Sign;
 import cs414.as4.btsaunde.garagesystem.model.Ticket;
 
+/**
+ * Retrieve Ticket Panel that Simulates the Entrance Panel.
+ * 
+ * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
+ */
 public class RetrieveTicketPanel extends JPanel implements ActionListener {
 
 	/**
@@ -97,7 +107,7 @@ public class RetrieveTicketPanel extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		// TODO Refactor This into a Seperate Controller Class
-		
+
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(RetrieveTicketPanel.TAKE_TICKET_COMMAND)) {
 			this.logger.info("Generating Ticket");
@@ -111,13 +121,27 @@ public class RetrieveTicketPanel extends JPanel implements ActionListener {
 			CardLayout layout = (CardLayout) this.getLayout();
 			layout.next(this);
 
-			DashboardWindow dashboard = DashboardWindow.getInstance();
+			// Update Garage Status
+			GarageConfiguration config = GarageConfiguration.getInstance();
+			if (config.getStatus() != GarageStatus.CLOSED) {
+				if (config.getAvailableSpaces() < 1) {
+					config.setStatus(GarageStatus.FULL);
+				} else {
+					config.setStatus(GarageStatus.OPEN);
+				}
+			}
 
 			// Open Gate
-			dashboard.getGatePanel().openGate();
+			Gate gate = config.getGate();
+			gate.openGate();
 
-			// Refresh Sign
-			dashboard.refreshFromConfig();
+			// Update Sign
+			Sign sign = config.getSign();
+			sign.setText(config.getStatus().toString());
+
+			// Refresh Dashboard
+			DashboardWindow dashboard = DashboardWindow.getInstance();
+			dashboard.update();
 
 			// User Drives Through Gate
 		}

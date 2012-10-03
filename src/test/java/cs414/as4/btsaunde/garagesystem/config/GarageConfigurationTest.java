@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import cs414.as4.btsaunde.garagesystem.dao.TicketDao;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
+import cs414.as4.btsaunde.garagesystem.model.Gate;
+import cs414.as4.btsaunde.garagesystem.model.Sign;
 import cs414.as4.btsaunde.garagesystem.model.Ticket;
 
 /**
@@ -19,12 +21,12 @@ import cs414.as4.btsaunde.garagesystem.model.Ticket;
  * 
  */
 public class GarageConfigurationTest {
-	
+
 	/**
 	 * Clear the DAO Before the Tests.
 	 */
 	@Before
-	public void clearDao(){
+	public void clearDao() {
 		TicketDao dao = TicketDao.getInstance();
 		dao.clear();
 	}
@@ -62,8 +64,16 @@ public class GarageConfigurationTest {
 		garage.setTotalSpaces(1);
 		garage.setParkingFee(2.25);
 
+		Gate gate = new Gate();
+		garage.setGate(gate);
+
+		Sign sign = new Sign();
+		garage.setSign(sign);
+
 		Assert.assertNotNull(garage);
 		Assert.assertEquals(GarageStatus.CLOSED, garage.getStatus());
+		Assert.assertEquals(gate, garage.getGate());
+		Assert.assertEquals(sign, garage.getSign());
 		Assert.assertEquals(new Integer(1), garage.getTotalSpaces());
 		Assert.assertEquals(new Double(2.25), garage.getParkingFee());
 	}

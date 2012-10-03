@@ -42,7 +42,7 @@ public class LogoutAction extends AbstractAction {
 
 		// Refresh Dashboard...
 		DashboardWindow dashboard = DashboardWindow.getInstance();
-		dashboard.refreshFromConfig();
+		dashboard.update();
 	}
 
 }

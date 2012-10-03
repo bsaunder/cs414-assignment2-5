@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as4.btsaunde.garagesystem.model.Sign;
 
 public class SignPanel extends JPanel {
 	/**
@@ -37,9 +38,11 @@ public class SignPanel extends JPanel {
 	/**
 	 * Updates the Sign to Display the Current Garage Status.
 	 */
-	public void updateSign() {
+	public void update() {
 		GarageConfiguration config = GarageConfiguration.getInstance();
-		this.lblStatus.setText(config.getStatus().toString());
+		Sign sign = config.getSign();
+
+		this.lblStatus.setText(sign.getText());
 	}
 
 }

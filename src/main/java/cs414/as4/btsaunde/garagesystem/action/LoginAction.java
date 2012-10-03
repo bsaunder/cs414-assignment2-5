@@ -56,7 +56,7 @@ public class LoginAction extends AbstractAction {
 
 				// Refresh Dashboard...
 				DashboardWindow dashboard = DashboardWindow.getInstance();
-				dashboard.refreshFromConfig();
+				dashboard.update();
 			}
 		} else {
 			this.logger.warning("No PIN Entered");

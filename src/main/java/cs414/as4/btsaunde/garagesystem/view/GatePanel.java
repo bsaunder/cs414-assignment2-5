@@ -11,10 +11,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as4.btsaunde.garagesystem.model.Gate;
+
+/**
+ * Gate Panel that Simulates the Gate.
+ * 
+ * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
+ */
 public class GatePanel extends JPanel implements ActionListener {
 
+	/**
+	 * Open Gate Color
+	 */
 	private static final Color OPEN_COLOR = new Color(0, 128, 0);
 
+	/**
+	 * Closed Gate Color
+	 */
 	private static final Color CLOSED_COLOR = new Color(128, 0, 0);
 
 	/**
@@ -67,10 +82,24 @@ public class GatePanel extends JPanel implements ActionListener {
 	/**
 	 * Closes the Gate.
 	 */
-	private void closeGate() {
+	public void closeGate() {
 		this.btnDriveThroughGate.setEnabled(false);
 		this.lblStatus.setText("Gate is Closed");
 		this.lblStatus.setForeground(GatePanel.CLOSED_COLOR);
+	}
+	
+	/**
+	 * Updates the Panel
+	 */
+	public void update(){
+		GarageConfiguration config = GarageConfiguration.getInstance();
+		Gate gate = config.getGate();
+		
+		if(gate.isOpen()){
+			this.openGate();
+		}else{
+			this.closeGate();
+		}
 	}
 
 	/*
@@ -83,7 +112,7 @@ public class GatePanel extends JPanel implements ActionListener {
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(GatePanel.DRIVE_THROUGH_COMMAND)) {
 			this.closeGate();
-			
+
 			// Reset Dashboard
 			DashboardWindow dashboard = DashboardWindow.getInstance();
 			dashboard.reset();

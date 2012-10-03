@@ -5,8 +5,6 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
-import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as4.btsaunde.garagesystem.model.Attendant;
 import cs414.as4.btsaunde.garagesystem.security.Identity;
 import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
@@ -41,12 +39,6 @@ public class Main {
 		attendant.setPin(1234);
 
 		Identity.getNewInstance(attendant);
-
-		// Set Initial GarageConfiguration
-		GarageConfiguration config = GarageConfiguration.getInstance();
-		config.setStatus(GarageStatus.OPEN);
-		config.setTotalSpaces(1);
-		config.setParkingFee(1.00);
 
 		Main.logger.info("Attendant Loaded: " + attendant.getName()
 				+ " (PIN - " + attendant.getPin() + ")");

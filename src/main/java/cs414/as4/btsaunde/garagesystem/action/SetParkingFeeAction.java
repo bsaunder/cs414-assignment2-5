@@ -54,7 +54,7 @@ public class SetParkingFeeAction extends AbstractAction {
 
 				// Refresh Dashboard...
 				DashboardWindow dashboard = DashboardWindow.getInstance();
-				dashboard.refreshFromConfig();
+				dashboard.update();
 			} catch (NumberFormatException nfe) {
 				this.logger.warning("Invalid Parking Fee Entered");
 				JOptionPane.showMessageDialog(null,

@@ -6,11 +6,19 @@ public class Ticket {
 	 * Ticket ID.
 	 */
 	private String ticketId;
-	
+
 	/**
 	 * Time Ticket was Issued.
 	 */
 	private Long timeIssued;
+	
+	/**
+	 * Default Constructor
+	 */
+	public Ticket(){
+		this.timeIssued = System.currentTimeMillis();
+		this.ticketId = "";
+	}
 
 	/**
 	 * Get the ticketId.
@@ -24,7 +32,8 @@ public class Ticket {
 	/**
 	 * Set the ticketId.
 	 * 
-	 * @param ticketId the ticketId to set
+	 * @param ticketId
+	 *            the ticketId to set
 	 */
 	public void setTicketId(String ticketId) {
 		this.ticketId = ticketId;
@@ -42,12 +51,35 @@ public class Ticket {
 	/**
 	 * Set the timeIssued.
 	 * 
-	 * @param timeIssued the timeIssued to set
+	 * @param timeIssued
+	 *            the timeIssued to set
 	 */
 	public void setTimeIssued(Long timeIssued) {
 		this.timeIssued = timeIssued;
 	}
-	
-	
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Ticket) {
+			Ticket ticket = (Ticket) obj;
+			String incTicketId = ticket.getTicketId();
+			if (incTicketId != null) {
+				return incTicketId.equals(this.ticketId);
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		return this.ticketId.hashCode();
+	}
+
 }

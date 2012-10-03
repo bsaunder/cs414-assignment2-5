@@ -36,4 +36,16 @@ public class AttendantTest {
 		attendant.setPin(1234);
 		Assert.assertEquals(new Integer(1234), attendant.getPin());
 	}
+	
+	/**
+	 * Tests Name Setup.
+	 */
+	@Test
+	public void ifNameSetThenPass() {
+		Attendant attendant = new Attendant("Fred");
+		Assert.assertNotNull(attendant);
+
+		attendant.setName("Joe");
+		Assert.assertEquals("Joe", attendant.getName());
+	}
 }

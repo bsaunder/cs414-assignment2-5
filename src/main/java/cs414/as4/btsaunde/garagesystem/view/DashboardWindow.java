@@ -27,6 +27,12 @@ import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as4.btsaunde.garagesystem.security.Identity;
 
+/**
+ * Main Dashboard for Simulator.
+ * 
+ * @author Bryan Saunders <btsaunde@gmail.com>
+ * 
+ */
 public class DashboardWindow extends JFrame {
 
 	/**
@@ -108,7 +114,7 @@ public class DashboardWindow extends JFrame {
 		this.buildMenus();
 		this.buildPanels();
 
-		this.refreshFromConfig();
+		this.update();
 	}
 
 	/**
@@ -268,15 +274,10 @@ public class DashboardWindow extends JFrame {
 	}
 
 	/**
-	 * Refresh Dashboard based on Current System Status.
+	 * Update Entire Dashboard based on Current System Status.
 	 */
-	public void refreshFromConfig() {
+	public void update() {
 		GarageConfiguration config = GarageConfiguration.getInstance();
-
-		// Update Status Based on Spaces
-		if (config.getAvailableSpaces() < 1) {
-			config.setStatus(GarageStatus.FULL);
-		}
 
 		// Update Menu Items Based on Garage Status
 		if (config.getStatus() == GarageStatus.OPEN) {
@@ -327,35 +328,20 @@ public class DashboardWindow extends JFrame {
 				+ config.getAvailableSpaces());
 		this.lblGarageStatus.setText("Garage Status: " + config.getStatus());
 
-		// Refresh Sign Panel
-		this.signPanel.updateSign();
+		// Update Sign Panel
+		this.signPanel.update();
 
 		// Update Start Panel
-		this.startPanel.updateButtonStatus();
-	}
-
-	/**
-	 * Get the signPanel.
-	 * 
-	 * @return the signPanel
-	 */
-	public SignPanel getSignPanel() {
-		return this.signPanel;
-	}
-
-	/**
-	 * Get the gatePanel.
-	 * 
-	 * @return the gatePanel
-	 */
-	public GatePanel getGatePanel() {
-		return this.gatePanel;
+		this.startPanel.update();
+		
+		// Update Gate Pane
+		this.gatePanel.update();
 	}
 
 	/**
 	 * Starts Retrieve Ticket Workflow.
 	 */
-	public void retrieveTicket() {
+	public void startRetrieveTicket() {
 		this.logger.info("Starting Retrieve Ticket Scenario");
 
 		CardLayout panelLayout = (CardLayout) this.retrieveTicketPanel
@@ -370,7 +356,7 @@ public class DashboardWindow extends JFrame {
 	/**
 	 * Starts Retrieve Ticket Workflow.
 	 */
-	public void payForTicket() {
+	public void startPayForTicket() {
 		this.logger.info("Starting Pay For Ticket Scenario");
 
 		CardLayout panelLayout = (CardLayout) this.payForTicketPanel
