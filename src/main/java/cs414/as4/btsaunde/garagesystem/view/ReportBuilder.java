@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.logging.Logger;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -12,6 +15,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import cs414.as4.btsaunde.garagesystem.enums.ReportType;
+import cs414.as4.btsaunde.garagesystem.view.model.DayComboBoxModel;
+import cs414.as4.btsaunde.garagesystem.view.model.MonthComboBoxModel;
+import cs414.as4.btsaunde.garagesystem.view.model.YearComboBoxModel;
 
 /**
  * Dialog for Building Reports.
@@ -21,16 +29,37 @@ import javax.swing.border.EmptyBorder;
  */
 public class ReportBuilder extends JDialog implements ActionListener {
 
+	/**
+	 * Cancel Command
+	 */
 	private static final String CANCEL_COMMAND = "Cancel";
+
+	/**
+	 * OK Command
+	 */
 	private static final String OK_COMMAND = "OK";
+
 	/**
 	 * Default Serial ID
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Logger
+	 */
+	private Logger logger = Logger.getAnonymousLogger();
+
 	/*
 	 * UI Compnents
 	 */
 	private JPanel contentPanel;
+	private JComboBox endYearComboBox;
+	private JComboBox endDayComboBox;
+	private JComboBox endMonthComboBox;
+	private JComboBox startYearComboBox;
+	private JComboBox startDayComboBox;
+	private JComboBox startMonthComboBox;
+	private JComboBox reportTypeComboBox;
 
 	/**
 	 * Create the dialog.
@@ -46,7 +75,7 @@ public class ReportBuilder extends JDialog implements ActionListener {
 	 * Initialize Dialog
 	 */
 	public void initalize() {
-		this.setBounds(100, 100, 450, 300);
+		this.setBounds(100, 100, 243, 300);
 		this.setAlwaysOnTop(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
@@ -66,33 +95,82 @@ public class ReportBuilder extends JDialog implements ActionListener {
 		this.getContentPane().add(this.contentPanel, BorderLayout.CENTER);
 
 		JLabel lblStartDate = new JLabel("Start Date");
-		lblStartDate.setBounds(6, 6, 55, 16);
+		lblStartDate.setBounds(6, 6, 84, 16);
 		this.contentPanel.add(lblStartDate);
 
-		JComboBox startMonthComboBox = new JComboBox();
+		startMonthComboBox = new JComboBox();
+		startMonthComboBox.setModel(new MonthComboBoxModel());
+		startMonthComboBox.setSelectedItem("1");
 		startMonthComboBox.setBounds(19, 29, 46, 26);
 		this.contentPanel.add(startMonthComboBox);
 
-		JLabel lblM = new JLabel("M:");
-		lblM.setBounds(6, 34, 17, 16);
-		this.contentPanel.add(lblM);
+		JLabel lblstartMonth = new JLabel("M:");
+		lblstartMonth.setBounds(6, 34, 17, 16);
+		this.contentPanel.add(lblstartMonth);
 
-		JComboBox startDayComboBox = new JComboBox();
+		startDayComboBox = new JComboBox();
 		startDayComboBox.setModel(new DayComboBoxModel());
 		startDayComboBox.setBounds(86, 29, 46, 26);
+		startDayComboBox.setSelectedItem("1");
 		this.contentPanel.add(startDayComboBox);
 
-		JLabel lblD = new JLabel("D:");
-		lblD.setBounds(73, 34, 17, 16);
-		this.contentPanel.add(lblD);
+		JLabel lblStartDay = new JLabel("D:");
+		lblStartDay.setBounds(73, 34, 17, 16);
+		this.contentPanel.add(lblStartDay);
 
-		JComboBox startYearComboBox = new JComboBox();
+		startYearComboBox = new JComboBox();
+		startYearComboBox.setModel(new YearComboBoxModel());
+		startYearComboBox.setSelectedItem("2012");
 		startYearComboBox.setBounds(151, 29, 69, 26);
 		this.contentPanel.add(startYearComboBox);
 
-		JLabel lblY = new JLabel("Y:");
-		lblY.setBounds(138, 34, 17, 16);
-		this.contentPanel.add(lblY);
+		JLabel lblStartYear = new JLabel("Y:");
+		lblStartYear.setBounds(138, 34, 17, 16);
+		this.contentPanel.add(lblStartYear);
+
+		JLabel lblEndDate = new JLabel("End Date");
+		lblEndDate.setBounds(6, 82, 84, 16);
+		contentPanel.add(lblEndDate);
+
+		JLabel lblEndMonth = new JLabel("M:");
+		lblEndMonth.setBounds(6, 110, 17, 16);
+		contentPanel.add(lblEndMonth);
+
+		endMonthComboBox = new JComboBox();
+		endMonthComboBox.setModel(new MonthComboBoxModel());
+		endMonthComboBox.setSelectedItem("1");
+		endMonthComboBox.setBounds(19, 105, 46, 26);
+		contentPanel.add(endMonthComboBox);
+
+		JLabel lblEndDay = new JLabel("D:");
+		lblEndDay.setBounds(73, 110, 17, 16);
+		contentPanel.add(lblEndDay);
+
+		endDayComboBox = new JComboBox();
+		endDayComboBox.setModel(new DayComboBoxModel());
+		endDayComboBox.setSelectedItem("1");
+		endDayComboBox.setBounds(86, 105, 46, 26);
+		contentPanel.add(endDayComboBox);
+
+		JLabel lblEndYear = new JLabel("Y:");
+		lblEndYear.setBounds(138, 110, 17, 16);
+		contentPanel.add(lblEndYear);
+
+		endYearComboBox = new JComboBox();
+		endYearComboBox.setModel(new YearComboBoxModel());
+		endYearComboBox.setSelectedItem("2012");
+		endYearComboBox.setBounds(151, 105, 69, 26);
+		contentPanel.add(endYearComboBox);
+
+		reportTypeComboBox = new JComboBox();
+		reportTypeComboBox.setModel(new DefaultComboBoxModel(ReportType
+				.values()));
+		reportTypeComboBox.setBounds(19, 181, 201, 25);
+		contentPanel.add(reportTypeComboBox);
+
+		JLabel lblReportType = new JLabel("Report Type");
+		lblReportType.setBounds(6, 159, 84, 16);
+		contentPanel.add(lblReportType);
 	}
 
 	/**
@@ -124,6 +202,49 @@ public class ReportBuilder extends JDialog implements ActionListener {
 			this.dispose();
 		} else if (command.equals(OK_COMMAND)) {
 			// Generate Report
+
+			// Build Start Date
+			String startDay = this.startDayComboBox.getSelectedItem()
+					.toString();
+			String startMonth = this.startMonthComboBox.getSelectedItem()
+					.toString();
+			String startYear = this.startYearComboBox.getSelectedItem()
+					.toString();
+
+			Calendar start = Calendar.getInstance();
+			start.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
+			start.set(Calendar.MONTH, Integer.valueOf(startMonth));
+			start.set(Calendar.YEAR, Integer.valueOf(startYear));
+
+			// Build End Date
+			String endDay = this.endDayComboBox.getSelectedItem().toString();
+			String endMonth = this.endMonthComboBox.getSelectedItem()
+					.toString();
+			String endYear = this.endYearComboBox.getSelectedItem().toString();
+
+			Calendar end = Calendar.getInstance();
+			end.set(Calendar.DAY_OF_MONTH, Integer.valueOf(endDay));
+			end.set(Calendar.MONTH, Integer.valueOf(endMonth));
+			end.set(Calendar.YEAR, Integer.valueOf(endYear));
+
+			this.logger.info("Generating Report From " + start + " To " + end);
+
+			// Call Appropriate Report Service
+			ReportType type = (ReportType) this.reportTypeComboBox
+					.getSelectedItem();
+			this.logger.info("Report Type: " + type.toString());
+			switch (type) {
+			case AVG_DAY:
+				break;
+			case AVG_HOUR:
+				break;
+			case AVG_STAY_DAY:
+				break;
+			case AVG_STAY_HOUR:
+				break;
+			case MOST_DAY:
+				break;
+			}
 		}
 	}
 }

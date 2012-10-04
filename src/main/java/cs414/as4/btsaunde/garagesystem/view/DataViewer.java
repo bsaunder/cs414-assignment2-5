@@ -5,9 +5,11 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
+
+import cs414.as4.btsaunde.garagesystem.view.model.EventTableModel;
 
 public class DataViewer extends JDialog {
 
@@ -58,7 +60,7 @@ public class DataViewer extends JDialog {
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(this.contentPane);
 		this.contentPane.setLayout(null);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(7, 11, 469, 440);
 		this.contentPane.add(scrollPane);

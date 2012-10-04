@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cs414.as4.btsaunde.garagesystem.view;
+package cs414.as4.btsaunde.garagesystem.view.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +17,7 @@ import cs414.as4.btsaunde.garagesystem.model.Event;
  * @author Bryan Saunders <bsaunder@redhat.com>
  * 
  */
-class EventTableModel extends AbstractTableModel {
+public class EventTableModel extends AbstractTableModel {
 
 	/**
 	 * Default Serial ID

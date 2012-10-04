@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cs414.as4.btsaunde.garagesystem.view;
+package cs414.as4.btsaunde.garagesystem.view.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,10 +10,12 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 /**
+ * Combo Box Model for Days.
+ * 
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
-public class DayComboBoxModel extends AbstractListModel implements
+public class MonthComboBoxModel extends AbstractListModel implements
 		ComboBoxModel {
 
 	/**
@@ -34,8 +36,8 @@ public class DayComboBoxModel extends AbstractListModel implements
 	/**
 	 * Create the Model
 	 */
-	public DayComboBoxModel() {
-		for (int i = 0; i <= 31; i++) {
+	public MonthComboBoxModel() {
+		for (int i = 1; i <= 12; i++) {
 			this.dayList.add(String.valueOf(i));
 		}
 	}
