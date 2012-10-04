@@ -111,6 +111,10 @@ public class GatePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(GatePanel.DRIVE_THROUGH_COMMAND)) {
+			// Close Gate
+			GarageConfiguration config = GarageConfiguration.getInstance();
+			Gate gate = config.getGate();
+			gate.closeGate();
 			this.closeGate();
 
 			// Reset Dashboard

@@ -3,6 +3,9 @@
  */
 package cs414.as4.btsaunde.garagesystem.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.table.AbstractTableModel;
 
 import cs414.as4.btsaunde.garagesystem.dao.EventDao;
@@ -67,16 +70,23 @@ class EventTableModel extends AbstractTableModel {
 	public Object getValueAt(int row, int col) {
 		Event event = this.eventDao.get(row);
 		Object value = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("MM.dd.yy kk:mm");
 
 		switch (col) {
 		case 0:
 			value = event.getTicket().getTicketId();
 			break;
 		case 1:
-			value = event.getTimeIssued();
+			if (event.getTimeIssued() != null) {
+				Date timeIssued = event.getTimeIssued();
+				value = formatter.format(timeIssued);
+			}
 			break;
 		case 2:
-			value = event.getTimePaid();
+			if (event.getTimePaid() != null) {
+				Date timePaid = event.getTimePaid();
+				value = formatter.format(timePaid);
+			}
 			break;
 		case 3:
 			value = event.getPaymentType();
@@ -86,9 +96,6 @@ class EventTableModel extends AbstractTableModel {
 			break;
 		}
 
-		if(value == null){
-			value = "-";
-		}
 		return value;
 	}
 

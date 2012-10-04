@@ -44,7 +44,7 @@ public class DataViewer extends JDialog {
 		this.setTitle("Parking Data Viewer");
 		this.setAlwaysOnTop(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setBounds(25, 25, 450, 450);
+		this.setBounds(25, 25, 490, 490);
 		this.setResizable(false);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		this.setModal(true);
@@ -60,11 +60,12 @@ public class DataViewer extends JDialog {
 		this.contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 6, 434, 408);
-		contentPane.add(scrollPane);
+		scrollPane.setBounds(7, 11, 469, 440);
+		this.contentPane.add(scrollPane);
 
 		this.table = new JTable();
-		scrollPane.setViewportView(table);
 		this.table.setModel(new EventTableModel());
+		this.table.setAutoCreateRowSorter(true);
+		scrollPane.setViewportView(this.table);
 	}
 }

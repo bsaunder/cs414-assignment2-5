@@ -19,6 +19,7 @@ import cs414.as4.btsaunde.garagesystem.action.ChangeGarageStatusAction;
 import cs414.as4.btsaunde.garagesystem.action.LoginAction;
 import cs414.as4.btsaunde.garagesystem.action.LogoutAction;
 import cs414.as4.btsaunde.garagesystem.action.OpenDataViewerAction;
+import cs414.as4.btsaunde.garagesystem.action.OpenReportGeneratorAction;
 import cs414.as4.btsaunde.garagesystem.action.RetrieveTicketAction;
 import cs414.as4.btsaunde.garagesystem.action.SetParkingFeeAction;
 import cs414.as4.btsaunde.garagesystem.action.SetTotalSpacesAction;
@@ -79,7 +80,7 @@ public class DashboardWindow extends JFrame {
 	private JLabel lblGarageStatus;
 	private JMenuItem mntmRetrieveParkingTicket;
 	private JMenuItem mntmShutdownKiosk;
-	private JMenu mnGenerateReport;
+	private JMenu mnDataTools;
 	private JMenuItem mntmSetMaximumSpaces;
 	private JMenuItem mntmSetParkingFee;
 	private JMenu mnSetGarageStatus;
@@ -248,15 +249,21 @@ public class DashboardWindow extends JFrame {
 		this.mntmSetMaximumSpaces.setMnemonic('M');
 		mnAdmin.add(this.mntmSetMaximumSpaces);
 
-		this.mnGenerateReport = new JMenu("Generate Report");
-		this.mnGenerateReport.setMnemonic('G');
-		mnAdmin.add(this.mnGenerateReport);
+		this.mnDataTools = new JMenu("Data Tools");
+		this.mnDataTools.setMnemonic('T');
+		mnAdmin.add(this.mnDataTools);
 
 		JMenuItem mntmOpenDataViewer = new JMenuItem();
 		mntmOpenDataViewer.setAction(new OpenDataViewerAction());
 		mntmOpenDataViewer.setText("Open Data Viewer");
 		mntmOpenDataViewer.setMnemonic('D');
-		this.mnGenerateReport.add(mntmOpenDataViewer);
+		this.mnDataTools.add(mntmOpenDataViewer);
+		
+		JMenuItem mntmOpenReportGenerator = new JMenuItem();
+		mntmOpenReportGenerator.setAction(new OpenReportGeneratorAction());
+		mntmOpenReportGenerator.setText("Open Report Generator");
+		mntmOpenReportGenerator.setMnemonic('R');
+		this.mnDataTools.add(mntmOpenReportGenerator);
 
 		mnAdmin.addSeparator();
 
@@ -307,7 +314,7 @@ public class DashboardWindow extends JFrame {
 			this.mnSetGarageStatus.setEnabled(true);
 			this.mntmSetMaximumSpaces.setEnabled(true);
 			this.mntmSetParkingFee.setEnabled(true);
-			this.mnGenerateReport.setEnabled(true);
+			this.mnDataTools.setEnabled(true);
 			this.mntmShutdownKiosk.setEnabled(true);
 		} else {
 			this.mntmLogin.setAction(new LoginAction());
@@ -316,7 +323,7 @@ public class DashboardWindow extends JFrame {
 			this.mnSetGarageStatus.setEnabled(false);
 			this.mntmSetMaximumSpaces.setEnabled(false);
 			this.mntmSetParkingFee.setEnabled(false);
-			this.mnGenerateReport.setEnabled(false);
+			this.mnDataTools.setEnabled(false);
 			this.mntmShutdownKiosk.setEnabled(false);
 		}
 		this.mntmLogin.setMnemonic(KeyEvent.VK_L);
