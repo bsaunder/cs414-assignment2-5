@@ -40,6 +40,30 @@ public class ReportService {
 	}
 
 	/**
+	 * Finds the Average Length of Stay Per Day for the Given Time Period
+	 * 
+	 * @param start
+	 *            Start Date
+	 * @param end
+	 *            End Date
+	 * @return Results Map
+	 */
+	public static Map<String, Double> getAverageStayPerDay(
+			final Calendar start, final Calendar end) {
+		Map<String, Double> reportResults = new LinkedHashMap<String, Double>();
+
+		reportResults.put("Monday", 5.6);
+		reportResults.put("Tuesday", 2.6);
+		reportResults.put("Wendesday", 4.6);
+		reportResults.put("Thursday", 7.5);
+		reportResults.put("Friday", 9.8);
+		reportResults.put("Saturday", 5.3);
+		reportResults.put("Sunday", 2.8);
+
+		return reportResults;
+	}
+
+	/**
 	 * Finds the Average Number of Cars Per Hour for the Given Time Period
 	 * 
 	 * @param start
@@ -79,4 +103,18 @@ public class ReportService {
 
 		return reportResults;
 	}
+
+	/**
+	 * Finds the Busiest Day for the Given Time Period
+	 * 
+	 * @param start
+	 *            Start Date
+	 * @param end
+	 *            End Date
+	 * @return Busiest Day
+	 */
+	public static Calendar getBusiestDay(final Calendar start, final Calendar end) {
+		return Calendar.getInstance();
+	}
+
 }

@@ -249,10 +249,16 @@ public class ReportBuilder extends JDialog implements ActionListener {
 				this.displayReport(type, avgHourResults);
 				break;
 			case AVG_STAY_DAY:
-				break;
-			case AVG_STAY_HOUR:
+				Map<String, Double> avgStayDayResults = ReportService
+						.getAverageStayPerDay(start, end);
+				this.displayReport(type, avgStayDayResults);
 				break;
 			case MOST_DAY:
+				Calendar busiestDay = ReportService.getBusiestDay(start, end);
+
+				JOptionPane.showMessageDialog(null, "The Busiest Day Was: "
+						+ busiestDay.getTime().toString(), type.toString(),
+						JOptionPane.INFORMATION_MESSAGE);
 				break;
 			}
 		}
