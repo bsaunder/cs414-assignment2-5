@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
@@ -13,10 +15,12 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cs414.as4.btsaunde.garagesystem.enums.ReportType;
+import cs414.as4.btsaunde.garagesystem.service.ReportService;
 import cs414.as4.btsaunde.garagesystem.view.model.DayComboBoxModel;
 import cs414.as4.btsaunde.garagesystem.view.model.MonthComboBoxModel;
 import cs414.as4.btsaunde.garagesystem.view.model.YearComboBoxModel;
@@ -235,8 +239,14 @@ public class ReportBuilder extends JDialog implements ActionListener {
 			this.logger.info("Report Type: " + type.toString());
 			switch (type) {
 			case AVG_DAY:
+				Map<String, Double> avgDayResults = ReportService
+						.getAveragePerDay(start, end);
+				this.displayReport(type, avgDayResults);
 				break;
 			case AVG_HOUR:
+				Map<String, Double> avgHourResults = ReportService
+						.getAveragePerHour(start, end);
+				this.displayReport(type, avgHourResults);
 				break;
 			case AVG_STAY_DAY:
 				break;
@@ -246,5 +256,26 @@ public class ReportBuilder extends JDialog implements ActionListener {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Displays the Results of a Report
+	 * 
+	 * @param type
+	 *            Report Type
+	 * @param results
+	 *            Report Results
+	 */
+	private void displayReport(ReportType type, Map<String, Double> results) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Report: " + type.toString() + "\n");
+		builder.append("\n");
+		for (Entry<String, Double> entry : results.entrySet()) {
+			builder.append(entry.getKey() + " = " + entry.getValue());
+			builder.append("\n");
+		}
+
+		JOptionPane.showMessageDialog(null, builder.toString(),
+				type.toString(), JOptionPane.INFORMATION_MESSAGE);
 	}
 }
