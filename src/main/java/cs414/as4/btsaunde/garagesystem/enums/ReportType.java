@@ -8,8 +8,8 @@ package cs414.as4.btsaunde.garagesystem.enums;
  */
 public enum ReportType {
 
-	AVG_DAY("Avg Cars per Day"), AVG_HOUR("Avg Cars per Hour"), AVG_STAY_DAY(
-			"Avg Stay per Day"), MOST_DAY("Most Cars in Single Day");
+	AVG_DAY("Avg Cars per Day"), AVG_STAY_DAY("Avg Stay per Day"), MOST_DAY(
+			"Most Cars in Single Day");
 
 	/**
 	 * String Value

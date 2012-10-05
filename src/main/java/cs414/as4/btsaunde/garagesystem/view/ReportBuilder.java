@@ -105,7 +105,7 @@ public class ReportBuilder extends JDialog implements ActionListener {
 		startMonthComboBox = new JComboBox();
 		startMonthComboBox.setModel(new MonthComboBoxModel());
 		startMonthComboBox.setSelectedItem("1");
-		startMonthComboBox.setBounds(19, 29, 46, 26);
+		startMonthComboBox.setBounds(19, 29, 55, 26);
 		this.contentPanel.add(startMonthComboBox);
 
 		JLabel lblstartMonth = new JLabel("M:");
@@ -114,22 +114,22 @@ public class ReportBuilder extends JDialog implements ActionListener {
 
 		startDayComboBox = new JComboBox();
 		startDayComboBox.setModel(new DayComboBoxModel());
-		startDayComboBox.setBounds(86, 29, 46, 26);
+		startDayComboBox.setBounds(95, 29, 53, 26);
 		startDayComboBox.setSelectedItem("1");
 		this.contentPanel.add(startDayComboBox);
 
 		JLabel lblStartDay = new JLabel("D:");
-		lblStartDay.setBounds(73, 34, 17, 16);
+		lblStartDay.setBounds(82, 34, 17, 16);
 		this.contentPanel.add(lblStartDay);
 
 		startYearComboBox = new JComboBox();
 		startYearComboBox.setModel(new YearComboBoxModel());
 		startYearComboBox.setSelectedItem("2012");
-		startYearComboBox.setBounds(151, 29, 69, 26);
+		startYearComboBox.setBounds(164, 29, 69, 26);
 		this.contentPanel.add(startYearComboBox);
 
 		JLabel lblStartYear = new JLabel("Y:");
-		lblStartYear.setBounds(138, 34, 17, 16);
+		lblStartYear.setBounds(151, 34, 17, 16);
 		this.contentPanel.add(lblStartYear);
 
 		JLabel lblEndDate = new JLabel("End Date");
@@ -143,27 +143,27 @@ public class ReportBuilder extends JDialog implements ActionListener {
 		endMonthComboBox = new JComboBox();
 		endMonthComboBox.setModel(new MonthComboBoxModel());
 		endMonthComboBox.setSelectedItem("1");
-		endMonthComboBox.setBounds(19, 105, 46, 26);
+		endMonthComboBox.setBounds(19, 105, 55, 26);
 		contentPanel.add(endMonthComboBox);
 
 		JLabel lblEndDay = new JLabel("D:");
-		lblEndDay.setBounds(73, 110, 17, 16);
+		lblEndDay.setBounds(82, 110, 17, 16);
 		contentPanel.add(lblEndDay);
 
 		endDayComboBox = new JComboBox();
 		endDayComboBox.setModel(new DayComboBoxModel());
 		endDayComboBox.setSelectedItem("1");
-		endDayComboBox.setBounds(86, 105, 46, 26);
+		endDayComboBox.setBounds(95, 105, 53, 26);
 		contentPanel.add(endDayComboBox);
 
 		JLabel lblEndYear = new JLabel("Y:");
-		lblEndYear.setBounds(138, 110, 17, 16);
+		lblEndYear.setBounds(151, 110, 17, 16);
 		contentPanel.add(lblEndYear);
 
 		endYearComboBox = new JComboBox();
 		endYearComboBox.setModel(new YearComboBoxModel());
 		endYearComboBox.setSelectedItem("2012");
-		endYearComboBox.setBounds(151, 105, 69, 26);
+		endYearComboBox.setBounds(164, 105, 69, 26);
 		contentPanel.add(endYearComboBox);
 
 		reportTypeComboBox = new JComboBox();
@@ -217,7 +217,7 @@ public class ReportBuilder extends JDialog implements ActionListener {
 
 			Calendar start = Calendar.getInstance();
 			start.set(Calendar.DAY_OF_MONTH, Integer.valueOf(startDay));
-			start.set(Calendar.MONTH, Integer.valueOf(startMonth));
+			start.set(Calendar.MONTH, Integer.valueOf(startMonth) - 1);
 			start.set(Calendar.YEAR, Integer.valueOf(startYear));
 
 			// Build End Date
@@ -228,7 +228,7 @@ public class ReportBuilder extends JDialog implements ActionListener {
 
 			Calendar end = Calendar.getInstance();
 			end.set(Calendar.DAY_OF_MONTH, Integer.valueOf(endDay));
-			end.set(Calendar.MONTH, Integer.valueOf(endMonth));
+			end.set(Calendar.MONTH, Integer.valueOf(endMonth) - 1);
 			end.set(Calendar.YEAR, Integer.valueOf(endYear));
 
 			this.logger.info("Generating Report From " + start + " To " + end);
@@ -242,11 +242,6 @@ public class ReportBuilder extends JDialog implements ActionListener {
 				Map<String, Double> avgDayResults = ReportService
 						.getAveragePerDay(start, end);
 				this.displayReport(type, avgDayResults);
-				break;
-			case AVG_HOUR:
-				Map<String, Double> avgHourResults = ReportService
-						.getAveragePerHour(start, end);
-				this.displayReport(type, avgHourResults);
 				break;
 			case AVG_STAY_DAY:
 				Map<String, Double> avgStayDayResults = ReportService

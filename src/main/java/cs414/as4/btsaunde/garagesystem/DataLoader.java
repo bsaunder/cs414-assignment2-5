@@ -18,6 +18,13 @@ import cs414.as4.btsaunde.garagesystem.service.PaymentService;
  */
 public class DataLoader {
 
+	/**
+	 * Loads the Specified Number of Events Between 9/1/12 and 9/9/12 with a
+	 * Random Distribution
+	 * 
+	 * @param eventcount
+	 *            Number of Events
+	 */
 	public void loadData(int eventcount) {
 		EventDao eventDao = EventDao.getInstance();
 		TicketDao ticketDao = TicketDao.getInstance();
@@ -47,10 +54,11 @@ public class DataLoader {
 			event.setTicket(ticket);
 			event.setTimeIssued(issued.getTime());
 			event.setTimePaid(paid.getTime());
-			
-			Double fee = paymentService.computeFee(ticketId, paid.getTimeInMillis());
+
+			Double fee = paymentService.computeFee(ticketId,
+					paid.getTimeInMillis());
 			event.setTotalFee(fee);
-			
+
 			if (i % 2 == 0) {
 				event.setPaymentType(PaymentType.CASH);
 			} else {
@@ -60,7 +68,56 @@ public class DataLoader {
 			ticketDao.remove(ticket);
 			eventDao.add(event);
 		}
-		
+
+		// Remove any Tickets, Just to be Safe.
+		ticketDao.clear();
+	}
+
+	/**
+	 * Load the Specified Number of Events for the Specified Date
+	 * 
+	 * @param eventcount
+	 *            Number of Events
+	 * @param date
+	 *            Date
+	 */
+	public void loadData(int eventcount, Calendar date) {
+		EventDao eventDao = EventDao.getInstance();
+		TicketDao ticketDao = TicketDao.getInstance();
+		PaymentService paymentService = new PaymentService();
+
+		// Create some Events
+		for (int i = 0; i < eventcount; i++) {
+
+			Ticket ticket = new Ticket();
+			String ticketId = "SPST0" + i;
+			ticket.setTicketId(ticketId);
+			ticket.setTimeIssued(date.getTimeInMillis());
+			ticketDao.add(ticket);
+
+			Calendar paid = Calendar.getInstance();
+			paid.setTime(date.getTime());
+			paid.set(Calendar.MINUTE, date.get(Calendar.MINUTE) + 20);
+
+			Event event = new Event();
+			event.setTicket(ticket);
+			event.setTimeIssued(date.getTime());
+			event.setTimePaid(paid.getTime());
+
+			Double fee = paymentService.computeFee(ticketId,
+					paid.getTimeInMillis());
+			event.setTotalFee(fee);
+
+			if (i % 2 == 0) {
+				event.setPaymentType(PaymentType.CASH);
+			} else {
+				event.setPaymentType(PaymentType.CREDIT);
+			}
+
+			ticketDao.remove(ticket);
+			eventDao.add(event);
+		}
+
 		// Remove any Tickets, Just to be Safe.
 		ticketDao.clear();
 	}
