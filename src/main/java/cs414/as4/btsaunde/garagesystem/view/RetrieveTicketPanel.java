@@ -106,8 +106,6 @@ public class RetrieveTicketPanel extends JPanel implements ActionListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent ae) {
-		// TODO Refactor This into a Seperate Controller Class
-
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(RetrieveTicketPanel.TAKE_TICKET_COMMAND)) {
 			this.logger.info("Generating Ticket");

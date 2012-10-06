@@ -74,7 +74,7 @@ public class DataLoader {
 	}
 
 	/**
-	 * Load the Specified Number of Events for the Specified Date
+	 * Load the Specified Number of Events for the Specified Date. Each Loaded Event lasts 20 Minutes.
 	 * 
 	 * @param eventcount
 	 *            Number of Events

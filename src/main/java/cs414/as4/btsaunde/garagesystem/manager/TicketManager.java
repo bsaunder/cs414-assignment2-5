@@ -24,6 +24,11 @@ public class TicketManager {
 	 * Event DAO.
 	 */
 	private EventDao eventDao;
+	
+	/**
+	 * Ticket Number Counter
+	 */
+	private Integer ticketNumber = 1;
 
 	/**
 	 * Private Constructor.
@@ -53,14 +58,13 @@ public class TicketManager {
 	 * @return New Ticket or null
 	 */
 	public Ticket createNewTicket() {
-		// TODO Refactor This. Dont Like it.
 		Ticket ticket = new Ticket();
 
 		Date issued = new Date();
 		ticket.setTimeIssued(issued.getTime());
 
 		// String id = UUID.randomUUID().toString();
-		String id = "SPS" + this.ticketDao.size() + 1;
+		String id = "SPS" + this.ticketNumber++;
 		ticket.setTicketId(id);
 
 		// Save Ticket
