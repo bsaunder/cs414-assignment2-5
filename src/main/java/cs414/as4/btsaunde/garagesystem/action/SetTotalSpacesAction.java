@@ -7,6 +7,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
+import cs414.as4.btsaunde.garagesystem.model.Sign;
 import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
@@ -50,6 +52,19 @@ public class SetTotalSpacesAction extends AbstractAction {
 				JOptionPane.showMessageDialog(null, "Maximum Space Count set to " + newCount,
 						"Set Parking Fee Success", JOptionPane.INFORMATION_MESSAGE);
 
+				// Update Garage Status
+				if (config.getStatus() != GarageStatus.CLOSED) {
+					if (config.getAvailableSpaces() < 1) {
+						config.setStatus(GarageStatus.FULL);
+					} else {
+						config.setStatus(GarageStatus.OPEN);
+					}
+				}
+				
+				// Update Sign
+				Sign sign = config.getSign();
+				sign.setText(config.getStatus().toString());
+				
 				// Refresh Dashboard...
 				DashboardWindow dashboard = DashboardWindow.getInstance();
 				dashboard.update();

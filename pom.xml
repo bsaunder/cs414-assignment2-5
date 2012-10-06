@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.bryansaunders</groupId>
-	<artifactId>cs414-as2-5</artifactId>
+	<artifactId>cs414-as4</artifactId>
 	<version>1.0</version>
 
 	<dependencies>
@@ -10,6 +10,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -22,7 +23,7 @@
 				<executions>
 					<execution>
 						<id>attach-sources</id>
-						<phase>verify</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>test-jar-no-fork</goal>
 							<goal>jar-no-fork</goal>
@@ -30,8 +31,31 @@
 					</execution>
 				</executions>
 				<configuration>
-					<finalName>A1-btsaunde</finalName>
+					<finalName>A4-btsaunde</finalName>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<finalName>A4-btsaunde-exeutable</finalName>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>cs414.as4.btsaunde.garagesystem.Main</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -41,8 +65,11 @@
 						<phase>install</phase>
 						<configuration>
 							<target>
-								<zip destfile="A4-btsaunde.jar">
-									<zipgroupfileset dir="target" includes="A4-btsaunde-*.jar" />
+								<zip destfile="A4-btsaunde.zip">
+									<zipfileset prefix="dist" dir="target" includes="A4-btsaunde*.jar"/>
+									<zipfileset prefix="docs" dir="docs" includes="SPS_*.pdf"/>
+									<zipfileset prefix="src" dir="src"/>
+									<zipfileset dir="." includes="pom.xml, .project, Readme.txt"/>
 								</zip>
 							</target>
 						</configuration>

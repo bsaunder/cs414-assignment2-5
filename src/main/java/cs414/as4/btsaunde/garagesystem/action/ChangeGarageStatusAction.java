@@ -10,6 +10,7 @@ import javax.swing.AbstractAction;
 
 import cs414.as4.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as4.btsaunde.garagesystem.enums.GarageStatus;
+import cs414.as4.btsaunde.garagesystem.model.Sign;
 import cs414.as4.btsaunde.garagesystem.view.DashboardWindow;
 
 /**
@@ -56,6 +57,10 @@ public class ChangeGarageStatusAction extends AbstractAction {
 		config.setStatus(this.status);
 
 		this.logger.info("Garage Status Set To: " + this.status);
+		
+		// Update Sign
+		Sign sign = config.getSign();
+		sign.setText(config.getStatus().toString());
 
 		// Refresh Dashboard...
 		DashboardWindow dashboard = DashboardWindow.getInstance();
