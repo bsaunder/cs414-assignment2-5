@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -250,9 +253,10 @@ public class ReportBuilder extends JDialog implements ActionListener {
 				break;
 			case MOST_DAY:
 				Calendar busiestDay = ReportService.getBusiestDay(start, end);
+				Format formatter = new SimpleDateFormat("EEEE MM/dd/yy");
 
 				JOptionPane.showMessageDialog(null, "The Busiest Day Was: "
-						+ busiestDay.getTime().toString(), type.toString(),
+						+ formatter.format(busiestDay.getTime()), type.toString(),
 						JOptionPane.INFORMATION_MESSAGE);
 				break;
 			}
@@ -271,8 +275,10 @@ public class ReportBuilder extends JDialog implements ActionListener {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Report: " + type.toString() + "\n");
 		builder.append("\n");
+		DecimalFormat formatter = new DecimalFormat("#,###,###,##0.00");
 		for (Entry<String, Double> entry : results.entrySet()) {
-			builder.append(entry.getKey() + " = " + entry.getValue());
+			builder.append(entry.getKey() + " = "
+					+ formatter.format(entry.getValue()));
 			builder.append("\n");
 		}
 
