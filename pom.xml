@@ -44,7 +44,7 @@
 						</goals>
 						<phase>package</phase>
 						<configuration>
-							<finalName>A4-btsaunde-exeutable</finalName>
+							<finalName>A4-btsaunde-executable</finalName>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
@@ -68,6 +68,7 @@
 								<zip destfile="A4-btsaunde.zip">
 									<zipfileset prefix="dist" dir="target" includes="A4-btsaunde*.jar"/>
 									<zipfileset prefix="docs" dir="docs" includes="SPS_*.pdf"/>
+									<zipfileset prefix="docs/images" dir="docs" includes="*.png"/>
 									<zipfileset prefix="src" dir="src"/>
 									<zipfileset dir="." includes="pom.xml, .project, Readme.txt"/>
 								</zip>
