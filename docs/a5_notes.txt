@@ -1,0 +1,17 @@
+GarageConfiguration
+----------------------
+ - Move to Server
+ - Remomve Gate and Sign
+
+
+KioskConfiguration
+----------------------
+ - Track Gate and Sign
+ - Replace Current Calls to GateConfiguration with Call to KioskConfiguration to Manage Gate and Sign
+ - Passthrough Methods for GarageConfiguration Data, Handle RMI Calls & Exceptions
+ 
+ 
+Identities on Server?
+
+
+Update Readme for A5

@@ -2,84 +2,37 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.bryansaunders</groupId>
-	<artifactId>cs414-as4</artifactId>
-	<version>1.0</version>
+	<artifactId>cs414-as5</artifactId>
+	<version>2.0</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>cs414-as5-client</module>
+		<module>cs414-as5-common</module>
+		<module>cs414-as5-server</module>
+	</modules>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.bryansaunders</groupId>
+				<artifactId>cs414-as5-common</artifactId>
+				<version>2.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>test-jar-no-fork</goal>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<finalName>A4-btsaunde</finalName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>attached</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<finalName>A4-btsaunde-executable</finalName>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>cs414.as4.btsaunde.garagesystem.Main</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<configuration>
-							<target>
-								<zip destfile="A4-btsaunde.zip">
-									<zipfileset prefix="dist" dir="target" includes="A4-btsaunde*.jar"/>
-									<zipfileset prefix="docs" dir="docs" includes="SPS_*.pdf"/>
-									<zipfileset prefix="docs/images" dir="docs" includes="*.png"/>
-									<zipfileset prefix="src" dir="src"/>
-									<zipfileset dir="." includes="pom.xml, .project, Readme.txt"/>
-								</zip>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<!-- <build> <plugins> <plugin> <artifactId>maven-antrun-plugin</artifactId> 
+		<version>1.7</version> <executions> <execution> <phase>install</phase> <configuration> 
+		<target> <zip destfile="A4-btsaunde.zip"> <zipfileset prefix="dist" dir="target" 
+		includes="A4-btsaunde*.jar" /> <zipfileset prefix="docs" dir="docs" includes="SPS_*.pdf" 
+		/> <zipfileset prefix="docs/images" dir="docs" includes="*.png" /> <zipfileset 
+		prefix="src" dir="src" /> <zipfileset dir="." includes="pom.xml, .project, 
+		Readme.txt" /> </zip> </target> </configuration> <goals> <goal>run</goal> 
+		</goals> </execution> </executions> </plugin> </plugins> </build> -->
 </project>
