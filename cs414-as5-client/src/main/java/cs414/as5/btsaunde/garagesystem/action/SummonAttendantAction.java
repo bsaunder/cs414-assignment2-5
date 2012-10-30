@@ -6,9 +6,6 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import cs414.as5.btsaunde.garagesystem.model.Attendant;
-import cs414.as5.btsaunde.garagesystem.security.Identity;
-
 public class SummonAttendantAction extends AbstractAction {
 
 	/**
@@ -29,11 +26,8 @@ public class SummonAttendantAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		this.logger.info("Summoning Attendant");
-		Identity identity = Identity.getInstance();
-		Attendant attendant = identity.getAttendant();
 
-		String message = "Today's Attendant " + attendant.getName()
-				+ " Has Been Summoned To this Kiosk.";
+		String message = "An Attendant Has Been Summoned To this Kiosk.";
 		JOptionPane.showMessageDialog(null, message, "Summon Attendant",
 				JOptionPane.WARNING_MESSAGE);
 	}
