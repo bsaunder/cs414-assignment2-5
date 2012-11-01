@@ -6,6 +6,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Logger;
 
+import cs414.as5.btsaunde.garagesystem.service.GarageService;
+import cs414.as5.btsaunde.garagesystem.service.GarageServiceImpl;
 import cs414.as5.btsaunde.garagesystem.service.PaymentService;
 import cs414.as5.btsaunde.garagesystem.service.PaymentServiceImpl;
 import cs414.as5.btsaunde.garagesystem.service.ReportService;
@@ -49,6 +51,12 @@ public class Server {
 	 */
 	private String reportServiceUrl = "rmi://localhost:" + this.port
 			+ "/ReportService";
+	
+	/**
+	 * Garage Service URL
+	 */
+	private String garageServiceUrl = "rmi://localhost:" + this.port
+			+ "/GarageService";
 
 	/**
 	 * Starts the Server.
@@ -87,11 +95,13 @@ public class Server {
 			TicketService ticketService = TicketServiceImpl.getInstance();
 			PaymentService paymentService = PaymentServiceImpl.getInstance();
 			ReportService reportService = ReportServiceImpl.getInstance();
+			GarageService garageService = GarageServiceImpl.getInstance();
 
 			// Register Services
 			Naming.rebind(this.ticketServiceUrl, ticketService);
 			Naming.rebind(this.paymentServiceUrl, paymentService);
 			Naming.rebind(this.reportServiceUrl, reportService);
+			Naming.rebind(this.garageServiceUrl, garageService);
 
 			this.logger.info("RMI registry ready: " + registry.toString());
 		} catch (Exception e) {

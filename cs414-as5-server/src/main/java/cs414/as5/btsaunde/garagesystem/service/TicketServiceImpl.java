@@ -53,9 +53,9 @@ public class TicketServiceImpl extends UnicastRemoteObject implements
 	}
 
 	/**
-	 * Get Ticket DAO.
+	 * Get Ticket Service.
 	 * 
-	 * @return Ticket DAO
+	 * @return TicketService
 	 */
 	public static TicketService getInstance() {
 		try {

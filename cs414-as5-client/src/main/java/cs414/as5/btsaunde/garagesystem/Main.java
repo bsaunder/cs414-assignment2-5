@@ -44,7 +44,6 @@ public class Main {
 		Main.logger.info("Attendant Loaded: " + attendant.getName()
 				+ " (PIN - " + attendant.getPin() + ")");
 
-
 		// Start Dashboard
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

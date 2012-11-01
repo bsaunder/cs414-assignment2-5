@@ -1,8 +1,12 @@
 package cs414.as5.btsaunde.garagesystem.config;
 
+import java.rmi.RemoteException;
+
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as5.btsaunde.garagesystem.model.Gate;
 import cs414.as5.btsaunde.garagesystem.model.Sign;
+import cs414.as5.btsaunde.garagesystem.rmi.RMIService;
+import cs414.as5.btsaunde.garagesystem.service.GarageService;
 
 public class KioskConfiguration {
 
@@ -10,6 +14,11 @@ public class KioskConfiguration {
 	 * Singleton Instance.
 	 */
 	private static KioskConfiguration instance;
+	
+	/**
+	 * Garage Service
+	 */
+	private GarageService garageService;
 
 	/**
 	 * Kiosk Gate.
@@ -23,23 +32,27 @@ public class KioskConfiguration {
 
 	/**
 	 * Singleton Constructor.
+	 * @throws RemoteException 
 	 */
-	private KioskConfiguration() {
+	private KioskConfiguration() throws RemoteException {
+		this.garageService = RMIService.getGarageService();
+		
 		// Create Gate
 		this.gate = new Gate();
 		this.gate.closeGate();
 
 		// Create Sign
 		this.sign = new Sign();
-		this.sign.setText("");
+		this.sign.setText(this.garageService.getStatus().toString());
 	}
 
 	/**
 	 * Get an Instance of the Current Kiosk Configuration.
 	 * 
 	 * @return Current Kiosk Configuration.
+	 * @throws RemoteException 
 	 */
-	public static KioskConfiguration getInstance() {
+	public static KioskConfiguration getInstance() throws RemoteException {
 		if (KioskConfiguration.instance == null) {
 			KioskConfiguration.instance = new KioskConfiguration();
 		}
@@ -51,10 +64,10 @@ public class KioskConfiguration {
 	 * Get the totalSpaces.
 	 * 
 	 * @return the totalSpaces
+	 * @throws RemoteException 
 	 */
-	public Integer getTotalSpaces() {
-		// TODO: Implement This as RMI Call to Server
-		return 5;
+	public Integer getTotalSpaces() throws RemoteException {
+		return this.garageService.getTotalSpaces();
 	}
 
 	/**
@@ -62,19 +75,20 @@ public class KioskConfiguration {
 	 * 
 	 * @param totalSpaces
 	 *            the totalSpaces to set
+	 * @throws RemoteException 
 	 */
-	public void setTotalSpaces(Integer totalSpaces) {
-		// TODO: Implement This as RMI Call to Server
+	public void setTotalSpaces(Integer totalSpaces) throws RemoteException {
+		this.garageService.setTotalSpaces(totalSpaces);
 	}
 
 	/**
 	 * Get the status.
 	 * 
 	 * @return the status
+	 * @throws RemoteException 
 	 */
-	public GarageStatus getStatus() {
-		// TODO: Implement This as RMI Call to Server
-		return GarageStatus.OPEN;
+	public GarageStatus getStatus() throws RemoteException {
+		return this.garageService.getStatus();
 	}
 
 	/**
@@ -82,29 +96,30 @@ public class KioskConfiguration {
 	 * 
 	 * @param status
 	 *            the status to set
+	 * @throws RemoteException 
 	 */
-	public void setStatus(GarageStatus status) {
-		// TODO: Implement This as RMI Call to Server
+	public void setStatus(GarageStatus status) throws RemoteException {
+		this.garageService.setStatus(status);
 	}
 
 	/**
 	 * Get the availableSpaces.
 	 * 
 	 * @return the availableSpaces
+	 * @throws RemoteException 
 	 */
-	public Integer getAvailableSpaces() {
-		// TODO: Implement This as RMI Call to Server
-		return 4;
+	public Integer getAvailableSpaces() throws RemoteException {
+		return this.garageService.getAvailableSpaces();
 	}
 
 	/**
 	 * Get the parkingFee.
 	 * 
 	 * @return the parkingFee
+	 * @throws RemoteException 
 	 */
-	public Double getParkingFee() {
-		// TODO: Implement This as RMI Call to Server
-		return 0.5;
+	public Double getParkingFee() throws RemoteException {
+		return this.garageService.getParkingFee();
 	}
 
 	/**
@@ -112,9 +127,10 @@ public class KioskConfiguration {
 	 * 
 	 * @param parkingFee
 	 *            the parkingFee to set
+	 * @throws RemoteException 
 	 */
-	public void setParkingFee(Double parkingFee) {
-		// TODO: Implement This as RMI Call to Server
+	public void setParkingFee(Double parkingFee) throws RemoteException {
+		this.garageService.setParkingFee(parkingFee);
 	}
 
 	/**

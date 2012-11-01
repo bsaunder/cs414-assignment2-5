@@ -2,6 +2,7 @@ package cs414.as5.btsaunde.garagesystem.view;
 
 import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
 import javax.swing.ButtonGroup;
@@ -10,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.border.EmptyBorder;
@@ -258,7 +260,7 @@ public class DashboardWindow extends JFrame {
 		mntmOpenDataViewer.setText("Open Data Viewer");
 		mntmOpenDataViewer.setMnemonic('D');
 		this.mnDataTools.add(mntmOpenDataViewer);
-		
+
 		JMenuItem mntmOpenReportGenerator = new JMenuItem();
 		mntmOpenReportGenerator.setAction(new OpenReportGeneratorAction());
 		mntmOpenReportGenerator.setText("Open Report Generator");
@@ -288,65 +290,72 @@ public class DashboardWindow extends JFrame {
 	 * Update Entire Dashboard based on Current System Status.
 	 */
 	public void update() {
-		KioskConfiguration config = KioskConfiguration.getInstance();
+		try {
+			KioskConfiguration config = KioskConfiguration.getInstance();
 
-		// Update Menu Items Based on Garage Status
-		if (config.getStatus() == GarageStatus.OPEN) {
-			this.mntmRetrieveParkingTicket.setEnabled(true);
-			this.rdbtnmntmOpen.setSelected(true);
-			this.rdbtnmntmClosed.setSelected(false);
-		} else if (config.getStatus() == GarageStatus.FULL) {
-			this.mntmRetrieveParkingTicket.setEnabled(false);
-			this.rdbtnmntmOpen.setSelected(true);
-			this.rdbtnmntmClosed.setSelected(false);
-		} else {
-			this.mntmRetrieveParkingTicket.setEnabled(false);
-			this.rdbtnmntmOpen.setSelected(false);
-			this.rdbtnmntmClosed.setSelected(true);
+			// Update Menu Items Based on Garage Status
+			if (config.getStatus() == GarageStatus.OPEN) {
+				this.mntmRetrieveParkingTicket.setEnabled(true);
+				this.rdbtnmntmOpen.setSelected(true);
+				this.rdbtnmntmClosed.setSelected(false);
+			} else if (config.getStatus() == GarageStatus.FULL) {
+				this.mntmRetrieveParkingTicket.setEnabled(false);
+				this.rdbtnmntmOpen.setSelected(true);
+				this.rdbtnmntmClosed.setSelected(false);
+			} else {
+				this.mntmRetrieveParkingTicket.setEnabled(false);
+				this.rdbtnmntmOpen.setSelected(false);
+				this.rdbtnmntmClosed.setSelected(true);
+			}
+
+			// Update Menu Items Based on Authorization
+			Identity identity = Identity.getInstance();
+			if (identity.isAuthenticated()) {
+				this.mntmLogin.setAction(new LogoutAction());
+				this.mntmLogin.setText("Logout");
+
+				this.mnSetGarageStatus.setEnabled(true);
+				this.mntmSetMaximumSpaces.setEnabled(true);
+				this.mntmSetParkingFee.setEnabled(true);
+				this.mnDataTools.setEnabled(true);
+				this.mntmShutdownKiosk.setEnabled(true);
+			} else {
+				this.mntmLogin.setAction(new LoginAction());
+				this.mntmLogin.setText("Login");
+
+				this.mnSetGarageStatus.setEnabled(false);
+				this.mntmSetMaximumSpaces.setEnabled(false);
+				this.mntmSetParkingFee.setEnabled(false);
+				this.mnDataTools.setEnabled(false);
+				this.mntmShutdownKiosk.setEnabled(false);
+			}
+			this.mntmLogin.setMnemonic(KeyEvent.VK_L);
+
+			// Update Config Menu Items
+			this.mntmSetMaximumSpaces.setText("Set Maximum Spaces ("
+					+ config.getTotalSpaces() + ")");
+			this.mntmSetParkingFee.setText("Set Parking Fee ($"
+					+ config.getParkingFee() + ")");
+
+			// Update Status Panel
+			this.lblSpacesRemaining.setText("Remaining Spaces: "
+					+ config.getAvailableSpaces());
+			this.lblGarageStatus
+					.setText("Garage Status: " + config.getStatus());
+
+			// Update Sign Panel
+			this.signPanel.update();
+
+			// Update Start Panel
+			this.startPanel.update();
+
+			// Update Gate Pane
+			this.gatePanel.update();
+		} catch (RemoteException re) {
+			this.logger.warning("Server Error");
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}
 
-		// Update Menu Items Based on Authorization
-		Identity identity = Identity.getInstance();
-		if (identity.isAuthenticated()) {
-			this.mntmLogin.setAction(new LogoutAction());
-			this.mntmLogin.setText("Logout");
-
-			this.mnSetGarageStatus.setEnabled(true);
-			this.mntmSetMaximumSpaces.setEnabled(true);
-			this.mntmSetParkingFee.setEnabled(true);
-			this.mnDataTools.setEnabled(true);
-			this.mntmShutdownKiosk.setEnabled(true);
-		} else {
-			this.mntmLogin.setAction(new LoginAction());
-			this.mntmLogin.setText("Login");
-
-			this.mnSetGarageStatus.setEnabled(false);
-			this.mntmSetMaximumSpaces.setEnabled(false);
-			this.mntmSetParkingFee.setEnabled(false);
-			this.mnDataTools.setEnabled(false);
-			this.mntmShutdownKiosk.setEnabled(false);
-		}
-		this.mntmLogin.setMnemonic(KeyEvent.VK_L);
-
-		// Update Config Menu Items
-		this.mntmSetMaximumSpaces.setText("Set Maximum Spaces ("
-				+ config.getTotalSpaces() + ")");
-		this.mntmSetParkingFee.setText("Set Parking Fee ($"
-				+ config.getParkingFee() + ")");
-
-		// Update Status Panel
-		this.lblSpacesRemaining.setText("Remaining Spaces: "
-				+ config.getAvailableSpaces());
-		this.lblGarageStatus.setText("Garage Status: " + config.getStatus());
-
-		// Update Sign Panel
-		this.signPanel.update();
-
-		// Update Start Panel
-		this.startPanel.update();
-		
-		// Update Gate Pane
-		this.gatePanel.update();
 	}
 
 	/**

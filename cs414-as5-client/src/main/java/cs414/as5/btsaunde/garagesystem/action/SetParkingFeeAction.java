@@ -1,6 +1,7 @@
 package cs414.as5.btsaunde.garagesystem.action;
 
 import java.awt.event.ActionEvent;
+import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
@@ -34,37 +35,43 @@ public class SetParkingFeeAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		KioskConfiguration config = KioskConfiguration.getInstance();
-		Double newFee = config.getParkingFee();
+		try {
+			KioskConfiguration config = KioskConfiguration.getInstance();
+			Double newFee = config.getParkingFee();
 
-		String message = "Enter New 15 Minute Parking Fee";
-		String feeString = JOptionPane.showInputDialog(null, message,
-				"Set Parking Fee", JOptionPane.QUESTION_MESSAGE);
+			String message = "Enter New 15 Minute Parking Fee";
+			String feeString = JOptionPane.showInputDialog(null, message,
+					"Set Parking Fee", JOptionPane.QUESTION_MESSAGE);
 
-		if (feeString != null && !feeString.isEmpty()) {
-			try {
-				newFee = Double.valueOf(feeString);
-				config.setParkingFee(newFee);
+			if (feeString != null && !feeString.isEmpty()) {
+				try {
+					newFee = Double.valueOf(feeString);
+					config.setParkingFee(newFee);
 
-				this.logger.info("15m Parking Fee Set: " + newFee);
+					this.logger.info("15m Parking Fee Set: " + newFee);
+					JOptionPane.showMessageDialog(null,
+							"15 Minute Parking Fee Set to $" + newFee,
+							"Set Parking Fee Success",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					// Refresh Dashboard...
+					DashboardWindow dashboard = DashboardWindow.getInstance();
+					dashboard.update();
+				} catch (NumberFormatException nfe) {
+					this.logger.warning("Invalid Parking Fee Entered");
+					JOptionPane.showMessageDialog(null,
+							"Must Enter a Valid Parking Fee.",
+							"Set Parking Fee Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				this.logger.warning("No Parking Fee Entered");
 				JOptionPane.showMessageDialog(null,
-						"15 Minute Parking Fee Set to $" + newFee,
-						"Set Parking Fee Success",
-						JOptionPane.INFORMATION_MESSAGE);
-
-				// Refresh Dashboard...
-				DashboardWindow dashboard = DashboardWindow.getInstance();
-				dashboard.update();
-			} catch (NumberFormatException nfe) {
-				this.logger.warning("Invalid Parking Fee Entered");
-				JOptionPane.showMessageDialog(null,
-						"Must Enter a Valid Parking Fee.",
-						"Set Parking Fee Error", JOptionPane.ERROR_MESSAGE);
+						"Must Enter a Parking Fee.", "Set Parking Fee Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
-		} else {
-			this.logger.warning("No Parking Fee Entered");
-			JOptionPane.showMessageDialog(null, "Must Enter a Parking Fee.",
-					"Set Parking Fee Error", JOptionPane.ERROR_MESSAGE);
+		} catch (RemoteException re) {
+			this.logger.warning("Server Error");
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}
 	}
 

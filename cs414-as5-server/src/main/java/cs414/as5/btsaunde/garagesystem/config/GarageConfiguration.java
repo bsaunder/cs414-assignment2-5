@@ -5,8 +5,6 @@ package cs414.as5.btsaunde.garagesystem.config;
 
 import cs414.as5.btsaunde.garagesystem.dao.TicketDao;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
-import cs414.as5.btsaunde.garagesystem.model.Gate;
-import cs414.as5.btsaunde.garagesystem.model.Sign;
 
 /**
  * @author Bryan Saunders <btsaunde@gmail.com>
@@ -40,16 +38,6 @@ public class GarageConfiguration {
 	private GarageStatus status;
 
 	/**
-	 * Garage Gate.
-	 */
-	private Gate gate;
-
-	/**
-	 * Garage Sign.
-	 */
-	private Sign sign;
-
-	/**
 	 * Singleton Constructor.
 	 */
 	private GarageConfiguration() {
@@ -59,14 +47,6 @@ public class GarageConfiguration {
 		this.parkingFee = 1.00;
 		this.totalSpaces = 1;
 		this.status = GarageStatus.OPEN;
-
-		// Create Gate
-		this.gate = new Gate();
-		this.gate.closeGate();
-
-		// Create Sign
-		this.sign = new Sign();
-		this.sign.setText(this.status.toString());
 	}
 
 	/**
@@ -147,43 +127,6 @@ public class GarageConfiguration {
 	 */
 	public void setParkingFee(Double parkingFee) {
 		this.parkingFee = parkingFee;
-	}
-
-	/**
-	 * Get the gate.
-	 * 
-	 * @return the gate
-	 */
-	public Gate getGate() {
-		return this.gate;
-	}
-
-	/**
-	 * Set the gate.
-	 * 
-	 * @param gate
-	 *            the gate to set
-	 */
-	public void setGate(Gate gate) {
-		this.gate = gate;
-	}
-
-	/**
-	 * Get the sign.
-	 * 
-	 * @return the sign
-	 */
-	public Sign getSign() {
-		return this.sign;
-	}
-
-	/**
-	 * Set the sign.
-	 * 
-	 * @param sign the sign to set
-	 */
-	public void setSign(Sign sign) {
-		this.sign = sign;
 	}
 
 }

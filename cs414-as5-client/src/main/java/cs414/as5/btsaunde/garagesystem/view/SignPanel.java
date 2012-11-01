@@ -2,8 +2,10 @@ package cs414.as5.btsaunde.garagesystem.view;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.rmi.RemoteException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -39,10 +41,14 @@ public class SignPanel extends JPanel {
 	 * Updates the Sign to Display the Current Garage Status.
 	 */
 	public void update() {
-		KioskConfiguration config = KioskConfiguration.getInstance();
-		Sign sign = config.getSign();
+		try {
+			KioskConfiguration config = KioskConfiguration.getInstance();
+			Sign sign = config.getSign();
 
-		this.lblStatus.setText(sign.getText());
+			this.lblStatus.setText(sign.getText());
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
+		}
 	}
 
 }

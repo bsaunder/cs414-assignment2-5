@@ -1,8 +1,10 @@
 package cs414.as5.btsaunde.garagesystem.view;
 
 import java.awt.Rectangle;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cs414.as5.btsaunde.garagesystem.action.PayForTicketAction;
@@ -46,13 +48,18 @@ public class StartPanel extends JPanel {
 	 * Enables/Disalbes Buttons Based on Garage Status.
 	 */
 	public void update() {
-		KioskConfiguration config = KioskConfiguration.getInstance();
-		
-		if (config.getStatus() == GarageStatus.OPEN) {
-			this.btnRetrieveTicket.setEnabled(true);
-		}else{
-			this.btnRetrieveTicket.setEnabled(false);
+		try {
+			KioskConfiguration config = KioskConfiguration.getInstance();
+
+			if (config.getStatus() == GarageStatus.OPEN) {
+				this.btnRetrieveTicket.setEnabled(true);
+			} else {
+				this.btnRetrieveTicket.setEnabled(false);
+			}
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}
+
 	}
 
 }

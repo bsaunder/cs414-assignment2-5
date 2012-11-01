@@ -1,10 +1,16 @@
 package cs414.as5.btsaunde.garagesystem.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import cs414.as5.btsaunde.garagesystem.enums.PaymentType;
 
-public class Event {
+public class Event implements Serializable {
+
+	/**
+	 * Default Serial ID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Ticket Associated with the Event.

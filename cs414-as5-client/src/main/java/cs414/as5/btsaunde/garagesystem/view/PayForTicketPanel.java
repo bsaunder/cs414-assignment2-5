@@ -283,33 +283,39 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 	 * Finalizes the Transaction
 	 */
 	private void endTransaction() {
-		// Move to Final Payment Screen
-		CardLayout layout = (CardLayout) this.getLayout();
-		layout.show(this, "PaymentSuccess");
+		try {
+			// Move to Final Payment Screen
+			CardLayout layout = (CardLayout) this.getLayout();
+			layout.show(this, "PaymentSuccess");
 
-		// Update Garage Status
-		KioskConfiguration config = KioskConfiguration.getInstance();
-		if (config.getStatus() != GarageStatus.CLOSED) {
-			if (config.getAvailableSpaces() < 1) {
-				config.setStatus(GarageStatus.FULL);
-			} else {
-				config.setStatus(GarageStatus.OPEN);
+			// Update Garage Status
+			KioskConfiguration config = KioskConfiguration.getInstance();
+			if (config.getStatus() != GarageStatus.CLOSED) {
+				if (config.getAvailableSpaces() < 1) {
+					config.setStatus(GarageStatus.FULL);
+				} else {
+					config.setStatus(GarageStatus.OPEN);
+				}
 			}
+
+			// Open Gate
+			Gate gate = config.getGate();
+			gate.openGate();
+
+			// Update Sign
+			Sign sign = config.getSign();
+			sign.setText(config.getStatus().toString());
+
+			// Refresh Dashboard
+			DashboardWindow dashboard = DashboardWindow.getInstance();
+			dashboard.update();
+
+			// User Drives Through Gate
+		} catch (RemoteException re) {
+			this.logger.warning("Server Error");
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}
 
-		// Open Gate
-		Gate gate = config.getGate();
-		gate.openGate();
-
-		// Update Sign
-		Sign sign = config.getSign();
-		sign.setText(config.getStatus().toString());
-
-		// Refresh Dashboard
-		DashboardWindow dashboard = DashboardWindow.getInstance();
-		dashboard.update();
-
-		// User Drives Through Gate
 	}
 
 	/**

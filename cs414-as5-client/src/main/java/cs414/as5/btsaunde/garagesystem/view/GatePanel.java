@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -87,18 +89,22 @@ public class GatePanel extends JPanel implements ActionListener {
 		this.lblStatus.setText("Gate is Closed");
 		this.lblStatus.setForeground(GatePanel.CLOSED_COLOR);
 	}
-	
+
 	/**
 	 * Updates the Panel
 	 */
-	public void update(){
-		KioskConfiguration config = KioskConfiguration.getInstance();
-		Gate gate = config.getGate();
-		
-		if(gate.isOpen()){
-			this.openGate();
-		}else{
-			this.closeGate();
+	public void update() {
+		try {
+			KioskConfiguration config = KioskConfiguration.getInstance();
+			Gate gate = config.getGate();
+
+			if (gate.isOpen()) {
+				this.openGate();
+			} else {
+				this.closeGate();
+			}
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}
 	}
 
@@ -109,17 +115,21 @@ public class GatePanel extends JPanel implements ActionListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent ae) {
-		String actionCommand = ae.getActionCommand();
-		if (actionCommand.equals(GatePanel.DRIVE_THROUGH_COMMAND)) {
-			// Close Gate
-			KioskConfiguration config = KioskConfiguration.getInstance();
-			Gate gate = config.getGate();
-			gate.closeGate();
-			this.closeGate();
+		try {
+			String actionCommand = ae.getActionCommand();
+			if (actionCommand.equals(GatePanel.DRIVE_THROUGH_COMMAND)) {
+				// Close Gate
+				KioskConfiguration config = KioskConfiguration.getInstance();
+				Gate gate = config.getGate();
+				gate.closeGate();
+				this.closeGate();
 
-			// Reset Dashboard
-			DashboardWindow dashboard = DashboardWindow.getInstance();
-			dashboard.reset();
+				// Reset Dashboard
+				DashboardWindow dashboard = DashboardWindow.getInstance();
+				dashboard.reset();
+			}
+		} catch (RemoteException re) {
+			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}
 	}
 

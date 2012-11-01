@@ -1,6 +1,13 @@
 package cs414.as5.btsaunde.garagesystem.model;
 
-public class Ticket {
+import java.io.Serializable;
+
+public class Ticket implements Serializable {
+
+	/**
+	 * Default Serial ID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Ticket ID.
@@ -11,11 +18,11 @@ public class Ticket {
 	 * Time Ticket was Issued.
 	 */
 	private Long timeIssued;
-	
+
 	/**
 	 * Default Constructor
 	 */
-	public Ticket(){
+	public Ticket() {
 		this.timeIssued = System.currentTimeMillis();
 		this.ticketId = "";
 	}
