@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as5.btsaunde.garagesystem.model.Sign;
 import cs414.as5.btsaunde.garagesystem.view.DashboardWindow;
@@ -36,7 +36,7 @@ public class SetTotalSpacesAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		GarageConfiguration config = GarageConfiguration.getInstance();
+		KioskConfiguration config = KioskConfiguration.getInstance();
 		Integer newCount = config.getTotalSpaces();
 
 		String message = "Enter New Maximum Space Count";
@@ -49,8 +49,10 @@ public class SetTotalSpacesAction extends AbstractAction {
 				config.setTotalSpaces(newCount);
 
 				this.logger.info("Total Spaces Set: " + newCount);
-				JOptionPane.showMessageDialog(null, "Maximum Space Count set to " + newCount,
-						"Set Parking Fee Success", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+						"Maximum Space Count set to " + newCount,
+						"Set Parking Fee Success",
+						JOptionPane.INFORMATION_MESSAGE);
 
 				// Update Garage Status
 				if (config.getStatus() != GarageStatus.CLOSED) {
@@ -60,11 +62,11 @@ public class SetTotalSpacesAction extends AbstractAction {
 						config.setStatus(GarageStatus.OPEN);
 					}
 				}
-				
+
 				// Update Sign
 				Sign sign = config.getSign();
 				sign.setText(config.getStatus().toString());
-				
+
 				// Refresh Dashboard...
 				DashboardWindow dashboard = DashboardWindow.getInstance();
 				dashboard.update();

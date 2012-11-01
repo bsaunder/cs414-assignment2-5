@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -12,12 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
-import cs414.as5.btsaunde.garagesystem.manager.TicketManager;
 import cs414.as5.btsaunde.garagesystem.model.Gate;
 import cs414.as5.btsaunde.garagesystem.model.Sign;
 import cs414.as5.btsaunde.garagesystem.model.Ticket;
+import cs414.as5.btsaunde.garagesystem.rmi.RMIService;
+import cs414.as5.btsaunde.garagesystem.service.TicketService;
 
 /**
  * Retrieve Ticket Panel that Simulates the Entrance Panel.
@@ -108,40 +110,44 @@ public class RetrieveTicketPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(RetrieveTicketPanel.TAKE_TICKET_COMMAND)) {
-			this.logger.info("Generating Ticket");
+			try {
+				this.logger.info("Generating Ticket");
+				TicketService ticketManager = RMIService.getTicketService();
+				Ticket ticket = ticketManager.createNewTicket();
 
-			TicketManager ticketManager = TicketManager.getInstance();
-			Ticket ticket = ticketManager.createNewTicket();
+				// Move to Next Card
+				this.lblTicketIdValue.setText(ticket.getTicketId());
 
-			// Move to Next Card
-			this.lblTicketIdValue.setText(ticket.getTicketId());
+				CardLayout layout = (CardLayout) this.getLayout();
+				layout.next(this);
 
-			CardLayout layout = (CardLayout) this.getLayout();
-			layout.next(this);
-
-			// Update Garage Status
-			GarageConfiguration config = GarageConfiguration.getInstance();
-			if (config.getStatus() != GarageStatus.CLOSED) {
-				if (config.getAvailableSpaces() < 1) {
-					config.setStatus(GarageStatus.FULL);
-				} else {
-					config.setStatus(GarageStatus.OPEN);
+				// Update Garage Status
+				KioskConfiguration config = KioskConfiguration.getInstance();
+				if (config.getStatus() != GarageStatus.CLOSED) {
+					if (config.getAvailableSpaces() < 1) {
+						config.setStatus(GarageStatus.FULL);
+					} else {
+						config.setStatus(GarageStatus.OPEN);
+					}
 				}
+
+				// Open Gate
+				Gate gate = config.getGate();
+				gate.openGate();
+
+				// Update Sign
+				Sign sign = config.getSign();
+				sign.setText(config.getStatus().toString());
+
+				// Refresh Dashboard
+				DashboardWindow dashboard = DashboardWindow.getInstance();
+				dashboard.update();
+
+				// User Drives Through Gate
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			// Open Gate
-			Gate gate = config.getGate();
-			gate.openGate();
-
-			// Update Sign
-			Sign sign = config.getSign();
-			sign.setText(config.getStatus().toString());
-
-			// Refresh Dashboard
-			DashboardWindow dashboard = DashboardWindow.getInstance();
-			dashboard.update();
-
-			// User Drives Through Gate
 		}
 	}
 }

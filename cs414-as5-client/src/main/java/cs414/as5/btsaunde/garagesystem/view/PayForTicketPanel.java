@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.text.NumberFormat;
 import java.util.logging.Logger;
 
@@ -15,13 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as5.btsaunde.garagesystem.enums.PaymentType;
-import cs414.as5.btsaunde.garagesystem.manager.TicketManager;
 import cs414.as5.btsaunde.garagesystem.model.Gate;
 import cs414.as5.btsaunde.garagesystem.model.Sign;
+import cs414.as5.btsaunde.garagesystem.rmi.RMIService;
 import cs414.as5.btsaunde.garagesystem.service.PaymentService;
+import cs414.as5.btsaunde.garagesystem.service.TicketService;
 
 /**
  * Pay For Ticket Panel that Simulates the Exit Terminal
@@ -61,6 +63,11 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 	 */
 	private PaymentService paymentService;
 
+	/**
+	 * Ticket Service
+	 */
+	private TicketService ticketManager;
+
 	/*
 	 * UI Components
 	 */
@@ -71,7 +78,8 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 	 * Create the panel.
 	 */
 	public PayForTicketPanel() {
-		this.paymentService = new PaymentService();
+		this.paymentService = RMIService.getPaymentService();
+		this.ticketManager = RMIService.getTicketService();
 
 		this.setBounds(new Rectangle(0, 0, 485, 311));
 		this.setLayout(new CardLayout(0, 0));
@@ -196,24 +204,33 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 				"Enter Card Number", JOptionPane.QUESTION_MESSAGE);
 
 		if (cardNumber != null && !cardNumber.isEmpty()) {
-			if (this.paymentService.cardIsValid(cardNumber)) {
-				this.logger.info("Valid Card Entered");
+			try {
+				if (this.paymentService.cardIsValid(cardNumber)) {
+					this.logger.info("Valid Card Entered");
 
-				// Charge Card
-				String feeString = this.lblTotal.getText().replaceAll(
-						"[^\\d.]+", "");
-				Double fee = Double.valueOf(feeString);
-				this.paymentService.chargeCard(cardNumber, fee);
+					// Charge Card
+					String feeString = this.lblTotal.getText().replaceAll(
+							"[^\\d.]+", "");
+					Double fee = Double.valueOf(feeString);
+					this.paymentService.chargeCard(cardNumber, fee);
 
-				// Update Ticket Status
-				TicketManager manager = TicketManager.getInstance();
-				manager.finalizeTicket(this.txtTicketId.getText(),
-						PaymentType.CREDIT, fee, System.currentTimeMillis());
+					// Update Ticket Status
+					TicketService ticketManager = RMIService.getTicketService();
+					try {
+						ticketManager.finalizeTicket(
+								this.txtTicketId.getText(), PaymentType.CREDIT,
+								fee, System.currentTimeMillis());
 
-				// Finish Transaction
-				this.endTransaction();
-			} else {
-				this.displayInvalidCashAmountError();
+						// Finish Transaction
+						this.endTransaction();
+					} catch (RemoteException e) {
+						this.displayRemoteConnectionError(e);
+					}
+				} else {
+					this.displayInvalidCashAmountError();
+				}
+			} catch (RemoteException e) {
+				this.displayRemoteConnectionError(e);
 			}
 		} else {
 			this.logger.warning("No Parking Fee Entered");
@@ -242,8 +259,7 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 					this.logger.info("Correct Change Entered");
 
 					// Update Ticket Status
-					TicketManager manager = TicketManager.getInstance();
-					manager.finalizeTicket(this.txtTicketId.getText(),
+					ticketManager.finalizeTicket(this.txtTicketId.getText(),
 							PaymentType.CASH, fee, System.currentTimeMillis());
 
 					// Finish Transaction
@@ -253,6 +269,8 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 				}
 			} catch (NumberFormatException nfe) {
 				this.displayInvalidCashAmountError();
+			} catch (RemoteException e) {
+				this.displayRemoteConnectionError(e);
 			}
 		} else {
 			this.logger.warning("No Parking Fee Entered");
@@ -270,7 +288,7 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 		layout.show(this, "PaymentSuccess");
 
 		// Update Garage Status
-		GarageConfiguration config = GarageConfiguration.getInstance();
+		KioskConfiguration config = KioskConfiguration.getInstance();
 		if (config.getStatus() != GarageStatus.CLOSED) {
 			if (config.getAvailableSpaces() < 1) {
 				config.setStatus(GarageStatus.FULL);
@@ -311,26 +329,45 @@ public class PayForTicketPanel extends JPanel implements ActionListener {
 		this.logger.info("Entered Ticket - " + ticketId);
 
 		// Validate Ticket ID
-		TicketManager ticketManager = TicketManager.getInstance();
-		if (ticketManager.verifyTicketId(ticketId)) {
-			// Compute Fee
-			Double ticketAmount = this.paymentService.computeFee(ticketId,
-					System.currentTimeMillis());
-			NumberFormat formatter = NumberFormat.getCurrencyInstance();
-			String amountString = formatter.format(ticketAmount);
+		try {
+			if (ticketManager.verifyTicketId(ticketId)) {
+				// Compute Fee
+				Double ticketAmount = this.paymentService.computeFee(ticketId,
+						System.currentTimeMillis());
+				NumberFormat formatter = NumberFormat.getCurrencyInstance();
+				String amountString = formatter.format(ticketAmount);
 
-			// Set Fee
-			this.lblTotal.setText(amountString);
+				// Set Fee
+				this.lblTotal.setText(amountString);
 
-			// Move to Next Card
-			CardLayout layout = (CardLayout) this.getLayout();
-			layout.show(this, "Payment");
-		} else {
-			// Not Valid, Error
-			this.logger.warning("Invalid Ticket ID (" + ticketId + ") Entered");
-			JOptionPane.showMessageDialog(this, ticketId
-					+ " Is Not Valid. Please Enter a Valid Ticket ID.",
-					"Ticket ID Error", JOptionPane.ERROR_MESSAGE);
+				// Move to Next Card
+				CardLayout layout = (CardLayout) this.getLayout();
+				layout.show(this, "Payment");
+			} else {
+				// Not Valid, Error
+				this.logger.warning("Invalid Ticket ID (" + ticketId
+						+ ") Entered");
+				JOptionPane.showMessageDialog(this, ticketId
+						+ " Is Not Valid. Please Enter a Valid Ticket ID.",
+						"Ticket ID Error", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (RemoteException re) {
+			this.displayRemoteConnectionError(re);
 		}
+	}
+
+	/**
+	 * Displays an Error for a Remote Exception
+	 * 
+	 * @param re
+	 *            Remote Exception
+	 */
+	private void displayRemoteConnectionError(RemoteException re) {
+		this.logger.warning(re.getMessage());
+		JOptionPane
+				.showMessageDialog(
+						this,
+						"Error occured contacting Server, Please Call an Attendant for Assistance.",
+						"Server Error", JOptionPane.ERROR_MESSAGE);
 	}
 }

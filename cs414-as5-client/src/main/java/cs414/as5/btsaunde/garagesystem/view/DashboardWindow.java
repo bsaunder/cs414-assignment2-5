@@ -25,7 +25,7 @@ import cs414.as5.btsaunde.garagesystem.action.SetParkingFeeAction;
 import cs414.as5.btsaunde.garagesystem.action.SetTotalSpacesAction;
 import cs414.as5.btsaunde.garagesystem.action.ShutdownAction;
 import cs414.as5.btsaunde.garagesystem.action.SummonAttendantAction;
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as5.btsaunde.garagesystem.security.Identity;
 
@@ -288,7 +288,7 @@ public class DashboardWindow extends JFrame {
 	 * Update Entire Dashboard based on Current System Status.
 	 */
 	public void update() {
-		GarageConfiguration config = GarageConfiguration.getInstance();
+		KioskConfiguration config = KioskConfiguration.getInstance();
 
 		// Update Menu Items Based on Garage Status
 		if (config.getStatus() == GarageStatus.OPEN) {

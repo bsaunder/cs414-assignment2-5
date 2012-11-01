@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import cs414.as5.btsaunde.garagesystem.action.PayForTicketAction;
 import cs414.as5.btsaunde.garagesystem.action.RetrieveTicketAction;
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 
 public class StartPanel extends JPanel {
@@ -46,7 +46,7 @@ public class StartPanel extends JPanel {
 	 * Enables/Disalbes Buttons Based on Garage Status.
 	 */
 	public void update() {
-		GarageConfiguration config = GarageConfiguration.getInstance();
+		KioskConfiguration config = KioskConfiguration.getInstance();
 		
 		if (config.getStatus() == GarageStatus.OPEN) {
 			this.btnRetrieveTicket.setEnabled(true);

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cs414.as5.btsaunde.garagesystem.enums.ReportType;
+import cs414.as5.btsaunde.garagesystem.rmi.RMIService;
 import cs414.as5.btsaunde.garagesystem.service.ReportService;
 import cs414.as5.btsaunde.garagesystem.view.model.DayComboBoxModel;
 import cs414.as5.btsaunde.garagesystem.view.model.MonthComboBoxModel;
@@ -240,25 +242,31 @@ public class ReportBuilder extends JDialog implements ActionListener {
 			ReportType type = (ReportType) this.reportTypeComboBox
 					.getSelectedItem();
 			this.logger.info("Report Type: " + type.toString());
-			switch (type) {
-			case AVG_DAY:
-				Map<String, Double> avgDayResults = ReportService
-						.getAveragePerDay(start, end);
-				this.displayReport(type, avgDayResults);
-				break;
-			case AVG_STAY_DAY:
-				Map<String, Double> avgStayDayResults = ReportService
-						.getAverageStayPerDay(start, end);
-				this.displayReport(type, avgStayDayResults);
-				break;
-			case MOST_DAY:
-				Calendar busiestDay = ReportService.getBusiestDay(start, end);
-				Format formatter = new SimpleDateFormat("EEEE MM/dd/yy");
+			ReportService reportService = RMIService.getReportService();
+			try {
+				switch (type) {
+				case AVG_DAY:
+					Map<String, Double> avgDayResults = reportService
+							.getAveragePerDay(start, end);
+					this.displayReport(type, avgDayResults);
+					break;
+				case AVG_STAY_DAY:
+					Map<String, Double> avgStayDayResults = reportService
+							.getAverageStayPerDay(start, end);
+					this.displayReport(type, avgStayDayResults);
+					break;
+				case MOST_DAY:
+					Calendar busiestDay = reportService.getBusiestDay(start,
+							end);
+					Format formatter = new SimpleDateFormat("EEEE MM/dd/yy");
 
-				JOptionPane.showMessageDialog(null, "The Busiest Day Was: "
-						+ formatter.format(busiestDay.getTime()), type.toString(),
-						JOptionPane.INFORMATION_MESSAGE);
-				break;
+					JOptionPane.showMessageDialog(null, "The Busiest Day Was: "
+							+ formatter.format(busiestDay.getTime()),
+							type.toString(), JOptionPane.INFORMATION_MESSAGE);
+					break;
+				}
+			} catch (RemoteException e) {
+				this.displayRemoteConnectionError(e);
 			}
 		}
 	}
@@ -284,5 +292,20 @@ public class ReportBuilder extends JDialog implements ActionListener {
 
 		JOptionPane.showMessageDialog(null, builder.toString(),
 				type.toString(), JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/**
+	 * Displays an Error for a Remote Exception
+	 * 
+	 * @param re
+	 *            Remote Exception
+	 */
+	private void displayRemoteConnectionError(RemoteException re) {
+		this.logger.warning(re.getMessage());
+		JOptionPane
+				.showMessageDialog(
+						this,
+						"Error occured contacting Server.",
+						"Server Error", JOptionPane.ERROR_MESSAGE);
 	}
 }

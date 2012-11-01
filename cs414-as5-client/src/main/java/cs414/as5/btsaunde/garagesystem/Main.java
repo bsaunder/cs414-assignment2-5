@@ -44,9 +44,6 @@ public class Main {
 		Main.logger.info("Attendant Loaded: " + attendant.getName()
 				+ " (PIN - " + attendant.getPin() + ")");
 
-		// Load Test Data
-		DataLoader loader = new DataLoader();
-		loader.loadData(45);
 
 		// Start Dashboard
 		EventQueue.invokeLater(new Runnable() {

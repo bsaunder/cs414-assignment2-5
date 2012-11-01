@@ -1,6 +1,7 @@
 package cs414.as5.btsaunde.garagesystem;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import cs414.as5.btsaunde.garagesystem.service.TicketServiceImpl;
  * 
  */
 public class Server {
-	
+
 	/**
 	 * Logger
 	 */
@@ -64,6 +65,14 @@ public class Server {
 	 */
 	public Server() {
 		this.startRmi();
+
+		// Load Test Data
+		try {
+			DataLoader loader = new DataLoader();
+			loader.loadData(45);
+		} catch (RemoteException e) {
+			this.logger.info("Test Data Not Loaded: " + e);
+		}
 	}
 
 	/**

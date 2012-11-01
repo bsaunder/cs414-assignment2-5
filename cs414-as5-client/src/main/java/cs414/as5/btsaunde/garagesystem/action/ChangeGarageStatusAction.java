@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as5.btsaunde.garagesystem.model.Sign;
 import cs414.as5.btsaunde.garagesystem.view.DashboardWindow;
@@ -53,7 +53,7 @@ public class ChangeGarageStatusAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		GarageConfiguration config = GarageConfiguration.getInstance();
+		KioskConfiguration config = KioskConfiguration.getInstance();
 		config.setStatus(this.status);
 
 		this.logger.info("Garage Status Set To: " + this.status);

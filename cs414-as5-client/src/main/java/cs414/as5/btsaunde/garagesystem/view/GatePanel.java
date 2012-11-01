@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
+import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.model.Gate;
 
 /**
@@ -92,7 +92,7 @@ public class GatePanel extends JPanel implements ActionListener {
 	 * Updates the Panel
 	 */
 	public void update(){
-		GarageConfiguration config = GarageConfiguration.getInstance();
+		KioskConfiguration config = KioskConfiguration.getInstance();
 		Gate gate = config.getGate();
 		
 		if(gate.isOpen()){
@@ -112,7 +112,7 @@ public class GatePanel extends JPanel implements ActionListener {
 		String actionCommand = ae.getActionCommand();
 		if (actionCommand.equals(GatePanel.DRIVE_THROUGH_COMMAND)) {
 			// Close Gate
-			GarageConfiguration config = GarageConfiguration.getInstance();
+			KioskConfiguration config = KioskConfiguration.getInstance();
 			Gate gate = config.getGate();
 			gate.closeGate();
 			this.closeGate();

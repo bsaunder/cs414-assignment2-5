@@ -8,8 +8,8 @@ import java.util.Date;
 
 import javax.swing.table.AbstractTableModel;
 
-import cs414.as5.btsaunde.garagesystem.dao.EventDao;
 import cs414.as5.btsaunde.garagesystem.model.Event;
+import cs414.as5.btsaunde.garagesystem.rmi.RMIService;
 
 /**
  * Table Model for Displaying Events.
@@ -31,15 +31,9 @@ public class EventTableModel extends AbstractTableModel {
 			"Fee" };
 
 	/**
-	 * Event DAO.
-	 */
-	private EventDao eventDao;
-
-	/**
 	 * Table Model Constructor.
 	 */
 	public EventTableModel() {
-		this.eventDao = EventDao.getInstance();
 	}
 
 	/**
@@ -53,7 +47,7 @@ public class EventTableModel extends AbstractTableModel {
 	 * Gets Row Count
 	 */
 	public int getRowCount() {
-		return this.eventDao.size();
+		return RMIService.getEventCount();
 	}
 
 	/**
@@ -68,7 +62,7 @@ public class EventTableModel extends AbstractTableModel {
 	 * Gets Value for a Cell
 	 */
 	public Object getValueAt(int row, int col) {
-		Event event = this.eventDao.get(row);
+		Event event = RMIService.getEvent(row);
 		Object value = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("MM.dd.yy kk:mm");
 
