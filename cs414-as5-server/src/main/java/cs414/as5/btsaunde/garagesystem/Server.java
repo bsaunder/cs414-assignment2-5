@@ -6,6 +6,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.logging.Logger;
 
+import cs414.as5.btsaunde.garagesystem.service.EventService;
+import cs414.as5.btsaunde.garagesystem.service.EventServiceImpl;
 import cs414.as5.btsaunde.garagesystem.service.GarageService;
 import cs414.as5.btsaunde.garagesystem.service.GarageServiceImpl;
 import cs414.as5.btsaunde.garagesystem.service.PaymentService;
@@ -57,6 +59,12 @@ public class Server {
 	 */
 	private String garageServiceUrl = "rmi://localhost:" + this.port
 			+ "/GarageService";
+	
+	/**
+	 * Event Service URL
+	 */
+	private String eventServiceUrl = "rmi://localhost:" + this.port
+			+ "/EventService";
 
 	/**
 	 * Starts the Server.
@@ -72,15 +80,16 @@ public class Server {
 	 * Server Constructor
 	 */
 	public Server() {
-		this.startRmi();
-
 		// Load Test Data
 		try {
 			DataLoader loader = new DataLoader();
 			loader.loadData(45);
+			this.logger.info("Test Data Loaded");
 		} catch (RemoteException e) {
 			this.logger.info("Test Data Not Loaded: " + e);
 		}
+		
+		this.startRmi();
 	}
 
 	/**
@@ -96,12 +105,14 @@ public class Server {
 			PaymentService paymentService = PaymentServiceImpl.getInstance();
 			ReportService reportService = ReportServiceImpl.getInstance();
 			GarageService garageService = GarageServiceImpl.getInstance();
+			EventService eventService = EventServiceImpl.getInstance();
 
 			// Register Services
 			Naming.rebind(this.ticketServiceUrl, ticketService);
 			Naming.rebind(this.paymentServiceUrl, paymentService);
 			Naming.rebind(this.reportServiceUrl, reportService);
 			Naming.rebind(this.garageServiceUrl, garageService);
+			Naming.rebind(this.eventServiceUrl, eventService);
 
 			this.logger.info("RMI registry ready: " + registry.toString());
 		} catch (Exception e) {

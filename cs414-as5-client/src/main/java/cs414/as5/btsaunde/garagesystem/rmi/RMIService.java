@@ -5,7 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import cs414.as5.btsaunde.garagesystem.model.Event;
+import cs414.as5.btsaunde.garagesystem.service.EventService;
 import cs414.as5.btsaunde.garagesystem.service.GarageService;
 import cs414.as5.btsaunde.garagesystem.service.PaymentService;
 import cs414.as5.btsaunde.garagesystem.service.ReportService;
@@ -107,13 +107,25 @@ public class RMIService {
 		return null;
 	}
 
-	public static Integer getEventCount() {
-		// TODO: Implement RMI Call
-		return 5;
-	}
+	/**
+	 * Retrieves the EventService from the RMI Server
+	 * 
+	 * @return EventService
+	 */
+	public static EventService getEventService() {
+		try {
+			EventService service = (EventService) Naming
+					.lookup("rmi://localhost:1099/EventService");
 
-	public static Event getEvent(int row) {
-		// TODO: Implement RMI Call
+			return service;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }

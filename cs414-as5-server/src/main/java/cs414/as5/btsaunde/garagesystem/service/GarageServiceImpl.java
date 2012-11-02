@@ -40,7 +40,7 @@ public class GarageServiceImpl extends UnicastRemoteObject implements GarageServ
 	 * 
 	 * @throws RemoteException
 	 */
-	public GarageServiceImpl() throws RemoteException {
+	private GarageServiceImpl() throws RemoteException {
 		this.config = GarageConfiguration.getInstance();
 	}
 	
@@ -55,7 +55,7 @@ public class GarageServiceImpl extends UnicastRemoteObject implements GarageServ
 				GarageServiceImpl.instance = new GarageServiceImpl();
 			}
 		} catch (RemoteException e) {
-			GarageServiceImpl.LOGGER.severe("Error Occured while Creating Ticket Service Remote Object.");
+			GarageServiceImpl.LOGGER.severe("Error Occured while Creating Garage Service Remote Object.");
 			e.printStackTrace();
 		}
 

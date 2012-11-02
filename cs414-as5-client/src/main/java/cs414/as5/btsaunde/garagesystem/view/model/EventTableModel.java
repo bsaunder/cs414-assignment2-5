@@ -3,6 +3,7 @@
  */
 package cs414.as5.btsaunde.garagesystem.view.model;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import javax.swing.table.AbstractTableModel;
 
 import cs414.as5.btsaunde.garagesystem.model.Event;
 import cs414.as5.btsaunde.garagesystem.rmi.RMIService;
+import cs414.as5.btsaunde.garagesystem.service.EventService;
 
 /**
  * Table Model for Displaying Events.
@@ -23,6 +25,8 @@ public class EventTableModel extends AbstractTableModel {
 	 * Default Serial ID
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private EventService eventService;
 
 	/**
 	 * Table Column Names.
@@ -34,6 +38,7 @@ public class EventTableModel extends AbstractTableModel {
 	 * Table Model Constructor.
 	 */
 	public EventTableModel() {
+		this.eventService = RMIService.getEventService();
 	}
 
 	/**
@@ -47,7 +52,12 @@ public class EventTableModel extends AbstractTableModel {
 	 * Gets Row Count
 	 */
 	public int getRowCount() {
-		return RMIService.getEventCount();
+		try {
+			return this.eventService.getEventCount();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	/**
@@ -62,7 +72,13 @@ public class EventTableModel extends AbstractTableModel {
 	 * Gets Value for a Cell
 	 */
 	public Object getValueAt(int row, int col) {
-		Event event = RMIService.getEvent(row);
+		Event event = null;
+		try {
+			event = this.eventService.getEvent(row);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
 		Object value = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("MM.dd.yy kk:mm");
 
