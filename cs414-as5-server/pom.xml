@@ -55,7 +55,7 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>cs414.as5.btsaunde.garagesystem.Main</mainClass>
+									<mainClass>cs414.as5.btsaunde.garagesystem.Server</mainClass>
 								</manifest>
 							</archive>
 						</configuration>

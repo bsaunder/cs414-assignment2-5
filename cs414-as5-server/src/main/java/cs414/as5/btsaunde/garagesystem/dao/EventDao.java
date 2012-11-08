@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import cs414.as5.btsaunde.garagesystem.config.GarageConfiguration;
 import cs414.as5.btsaunde.garagesystem.model.Event;
 import cs414.as5.btsaunde.garagesystem.model.Ticket;
 import cs414.as5.btsaunde.garagesystem.util.DateUtil;
@@ -50,6 +51,28 @@ public class EventDao extends LinkedList<Event> {
 		}
 
 		return EventDao.instance;
+	}
+	
+	/**
+	 * Override Remove Method to call Notify on GarageConfig.
+	 */
+	@Override
+	public boolean add(Event e) {
+		GarageConfiguration config = GarageConfiguration.getInstance();
+		config.notifyListeners();
+		
+		return super.add(e);
+	}
+	
+	/**
+	 * Override Remove Method to call Notify on GarageConfig.
+	 */
+	@Override
+	public boolean remove(Object o) {
+		GarageConfiguration config = GarageConfiguration.getInstance();
+		config.notifyListeners();
+		
+		return super.remove(o);
 	}
 
 	/**

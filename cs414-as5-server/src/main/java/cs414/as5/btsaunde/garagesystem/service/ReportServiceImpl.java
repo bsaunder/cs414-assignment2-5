@@ -68,12 +68,8 @@ public class ReportServiceImpl extends UnicastRemoteObject implements
 		return ReportServiceImpl.instance;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.ReportService#getAveragePerDay
-	 * (java.util.Calendar, java.util.Calendar)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Map<String, Double> getAveragePerDay(final Calendar start,
 			final Calendar end) {
@@ -150,12 +146,8 @@ public class ReportServiceImpl extends UnicastRemoteObject implements
 		return reportResults;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.ReportService#getAverageStayPerDay
-	 * (java.util.Calendar, java.util.Calendar)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Map<String, Double> getAverageStayPerDay(final Calendar start,
 			final Calendar end) {
@@ -267,12 +259,8 @@ public class ReportServiceImpl extends UnicastRemoteObject implements
 		return reportResults;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.ReportService#getBusiestDay(java
-	 * .util.Calendar, java.util.Calendar)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Calendar getBusiestDay(final Calendar start, final Calendar end) {
 

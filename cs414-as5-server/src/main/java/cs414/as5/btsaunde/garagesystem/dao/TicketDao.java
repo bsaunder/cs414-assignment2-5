@@ -43,13 +43,27 @@ public class TicketDao extends LinkedList<Ticket> {
 	 */
 	@Override
 	public boolean add(Ticket ticket) {
+		boolean result = false;
+
 		GarageConfiguration config = GarageConfiguration.getInstance();
 		Integer total = config.getTotalSpaces();
-		if (this.size() >= total) {
-			return false;
-		} else {
-			return super.add(ticket);
+		if (this.size() < total) {
+			result = super.add(ticket);
 		}
+		config.notifyListeners();
+
+		return result;
+	}
+	
+	/**
+	 * Override Remove Method to call Notify on GarageConfig.
+	 */
+	@Override
+	public boolean remove(Object o) {
+		GarageConfiguration config = GarageConfiguration.getInstance();
+		config.notifyListeners();
+		
+		return super.remove(o);
 	}
 
 	/**

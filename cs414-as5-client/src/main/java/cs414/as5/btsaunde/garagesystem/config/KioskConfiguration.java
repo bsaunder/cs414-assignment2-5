@@ -14,7 +14,7 @@ public class KioskConfiguration {
 	 * Singleton Instance.
 	 */
 	private static KioskConfiguration instance;
-	
+
 	/**
 	 * Garage Service
 	 */
@@ -31,12 +31,18 @@ public class KioskConfiguration {
 	private Sign sign;
 
 	/**
+	 * Kiosk Info
+	 */
+	private KioskInfo kiosk;
+
+	/**
 	 * Singleton Constructor.
-	 * @throws RemoteException 
+	 * 
+	 * @throws RemoteException
 	 */
 	private KioskConfiguration() throws RemoteException {
 		this.garageService = RMIService.getGarageService();
-		
+
 		// Create Gate
 		this.gate = new Gate();
 		this.gate.closeGate();
@@ -50,7 +56,7 @@ public class KioskConfiguration {
 	 * Get an Instance of the Current Kiosk Configuration.
 	 * 
 	 * @return Current Kiosk Configuration.
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public static KioskConfiguration getInstance() throws RemoteException {
 		if (KioskConfiguration.instance == null) {
@@ -64,7 +70,7 @@ public class KioskConfiguration {
 	 * Get the totalSpaces.
 	 * 
 	 * @return the totalSpaces
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public Integer getTotalSpaces() throws RemoteException {
 		return this.garageService.getTotalSpaces();
@@ -75,7 +81,7 @@ public class KioskConfiguration {
 	 * 
 	 * @param totalSpaces
 	 *            the totalSpaces to set
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public void setTotalSpaces(Integer totalSpaces) throws RemoteException {
 		this.garageService.setTotalSpaces(totalSpaces);
@@ -85,7 +91,7 @@ public class KioskConfiguration {
 	 * Get the status.
 	 * 
 	 * @return the status
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public GarageStatus getStatus() throws RemoteException {
 		return this.garageService.getStatus();
@@ -96,7 +102,7 @@ public class KioskConfiguration {
 	 * 
 	 * @param status
 	 *            the status to set
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public void setStatus(GarageStatus status) throws RemoteException {
 		this.garageService.setStatus(status);
@@ -106,7 +112,7 @@ public class KioskConfiguration {
 	 * Get the availableSpaces.
 	 * 
 	 * @return the availableSpaces
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public Integer getAvailableSpaces() throws RemoteException {
 		return this.garageService.getAvailableSpaces();
@@ -116,7 +122,7 @@ public class KioskConfiguration {
 	 * Get the parkingFee.
 	 * 
 	 * @return the parkingFee
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public Double getParkingFee() throws RemoteException {
 		return this.garageService.getParkingFee();
@@ -127,7 +133,7 @@ public class KioskConfiguration {
 	 * 
 	 * @param parkingFee
 	 *            the parkingFee to set
-	 * @throws RemoteException 
+	 * @throws RemoteException
 	 */
 	public void setParkingFee(Double parkingFee) throws RemoteException {
 		this.garageService.setParkingFee(parkingFee);
@@ -169,5 +175,23 @@ public class KioskConfiguration {
 	 */
 	public void setSign(Sign sign) {
 		this.sign = sign;
+	}
+
+	/**
+	 * Sets the Kiosk for this Configuration
+	 * 
+	 * @param kiosk
+	 */
+	public void setKiosk(KioskInfo kiosk) {
+		this.kiosk = kiosk;
+	}
+
+	/**
+	 * Get the kiosk.
+	 * 
+	 * @return the kiosk
+	 */
+	public KioskInfo getKiosk() {
+		return this.kiosk;
 	}
 }

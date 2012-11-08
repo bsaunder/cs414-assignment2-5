@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>cs414-as5</artifactId>
+		<groupId>net.bryansaunders</groupId>
+		<version>2.0</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>cs414-as5-package</artifactId>
+	<packaging>pom</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.bryansaunders</groupId>
+			<artifactId>cs414-as5-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.bryansaunders</groupId>
+			<artifactId>cs414-as5-server</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bryansaunders</groupId>
+			<artifactId>cs414-as5-client</artifactId>
+			<version>2.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<configuration>
+							<target>
+								<zip destfile="A5-btsaunde.zip">
+									<!-- Get JAR's -->
+									<zipfileset prefix="dist" dir="../cs414-as5-common/target" includes="A5-btsaunde*.jar" />
+									<zipfileset prefix="dist" dir="../cs414-as5-server/target" includes="A5-btsaunde*.jar" />
+									<zipfileset prefix="dist" dir="../cs414-as5-client/target" includes="A5-btsaunde*.jar" />
+									
+									<!-- Get Documentation -->
+									<zipfileset prefix="docs" dir="../docs" includes="SPS_*.pdf" />
+									<zipfileset prefix="docs/images" dir="../docs" includes="*.png" />
+									<zipfileset fullpath="Readme.txt" dir="../docs" includes="Readme.txt" />
+									
+									<!-- Get Source -->
+									<zipfileset prefix="src/cs414-as5-common" dir="../cs414-as5-common" includes="pom.xml, src" />
+									<zipfileset prefix="src/cs414-as5-server" dir="../cs414-as5-server" includes="pom.xml, src" />
+									<zipfileset prefix="src/cs414-as5-client" dir="../cs414-as5-client" includes="pom.xml, src" />
+									<zipfileset fullpath="src/cs414-as5-package/pom.xml" dir="." includes="pom.xml" />
+									<zipfileset fullpath="src/pom.xml" dir="../" includes="pom.xml" />
+								</zip>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

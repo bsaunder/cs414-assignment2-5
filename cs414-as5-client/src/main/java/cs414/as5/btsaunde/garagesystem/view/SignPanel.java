@@ -44,8 +44,11 @@ public class SignPanel extends JPanel {
 		try {
 			KioskConfiguration config = KioskConfiguration.getInstance();
 			Sign sign = config.getSign();
+			
+			String status = config.getStatus().toString();
 
-			this.lblStatus.setText(sign.getText());
+			sign.setText(status);
+			this.lblStatus.setText(status);
 		} catch (RemoteException re) {
 			JOptionPane.showMessageDialog(null, "Error Contacting the Server.");
 		}

@@ -64,12 +64,8 @@ public class PaymentServiceImpl extends UnicastRemoteObject implements
 	 */
 	private static final Long SEGMENT_LENGTH_MS = 900000L;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.PaymentService#computeFee(java
-	 * .lang.String, java.lang.Long)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Double computeFee(String ticketId, Long end) throws RemoteException {
 		TicketService manager = TicketServiceImpl.getInstance();
@@ -97,24 +93,16 @@ public class PaymentServiceImpl extends UnicastRemoteObject implements
 		return totalFee;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.PaymentService#cardIsValid(java
-	 * .lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean cardIsValid(String cardNumber) {
 		PaymentServiceImpl.LOGGER.info("Validated Card: " + cardNumber);
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.PaymentService#chargeCard(java
-	 * .lang.String, java.lang.Double)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void chargeCard(String cardNumber, Double fee) {
 		PaymentServiceImpl.LOGGER.info("Charged Card: " + cardNumber

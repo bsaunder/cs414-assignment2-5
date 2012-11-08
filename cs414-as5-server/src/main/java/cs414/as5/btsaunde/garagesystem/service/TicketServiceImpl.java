@@ -70,11 +70,8 @@ public class TicketServiceImpl extends UnicastRemoteObject implements
 		return TicketServiceImpl.instance;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.TicketService#createNewTicket()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Ticket createNewTicket() {
 		Ticket ticket = new Ticket();
@@ -103,37 +100,23 @@ public class TicketServiceImpl extends UnicastRemoteObject implements
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.TicketService#verifyTicketId(
-	 * java.lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
 	public boolean verifyTicketId(String ticketId) {
 		Ticket ticket = this.ticketDao.findTicketById(ticketId);
 		return ticket != null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.TicketService#getTicket(java.
-	 * lang.String)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Ticket getTicket(String ticketId) {
 		return this.ticketDao.findTicketById(ticketId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.TicketService#finalizeTicket(
-	 * cs414.as5.btsaunde.garagesystem.model.Ticket,
-	 * cs414.as5.btsaunde.garagesystem.enums.PaymentType, java.lang.Double,
-	 * java.lang.Long)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void finalizeTicket(Ticket ticket, PaymentType paymentType,
 			Double totalFee, Long timePaid) {
@@ -147,13 +130,8 @@ public class TicketServiceImpl extends UnicastRemoteObject implements
 		this.ticketDao.remove(ticket);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * cs414.as5.btsaunde.garagesystem.service.TicketService#finalizeTicket(
-	 * java.lang.String, cs414.as5.btsaunde.garagesystem.enums.PaymentType,
-	 * java.lang.Double, java.lang.Long)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void finalizeTicket(String ticketId, PaymentType paymentType,
 			Double totalFee, Long timePaid) {

@@ -56,15 +56,15 @@ public class EventServiceImpl extends UnicastRemoteObject implements EventServic
 		return EventServiceImpl.instance;
 	}
 	
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.EventService#getEventCount()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Integer getEventCount(){
 		return this.eventDao.size();
 	}
 	
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.EventService#getEvent(int)
+	/**
+	 * {@inheritDoc}
 	 */
 	public Event getEvent(int id){
 		return this.eventDao.get(id);

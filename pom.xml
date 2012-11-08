@@ -9,6 +9,7 @@
 		<module>cs414-as5-client</module>
 		<module>cs414-as5-common</module>
 		<module>cs414-as5-server</module>
+		<module>cs414-as5-package</module>
 	</modules>
 
 	<dependencyManagement>
@@ -26,13 +27,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<!-- <build> <plugins> <plugin> <artifactId>maven-antrun-plugin</artifactId> 
-		<version>1.7</version> <executions> <execution> <phase>install</phase> <configuration> 
-		<target> <zip destfile="A4-btsaunde.zip"> <zipfileset prefix="dist" dir="target" 
-		includes="A4-btsaunde*.jar" /> <zipfileset prefix="docs" dir="docs" includes="SPS_*.pdf" 
-		/> <zipfileset prefix="docs/images" dir="docs" includes="*.png" /> <zipfileset 
-		prefix="src" dir="src" /> <zipfileset dir="." includes="pom.xml, .project, 
-		Readme.txt" /> </zip> </target> </configuration> <goals> <goal>run</goal> 
-		</goals> </execution> </executions> </plugin> </plugins> </build> -->
 </project>

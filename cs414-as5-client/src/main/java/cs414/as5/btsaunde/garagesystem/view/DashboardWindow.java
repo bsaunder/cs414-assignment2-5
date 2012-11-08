@@ -30,6 +30,7 @@ import cs414.as5.btsaunde.garagesystem.action.SummonAttendantAction;
 import cs414.as5.btsaunde.garagesystem.config.KioskConfiguration;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
 import cs414.as5.btsaunde.garagesystem.security.Identity;
+import cs414.as5.btsaunde.garagesystem.service.GarageConfigurationListener;
 
 /**
  * Main Dashboard for Simulator.
@@ -37,7 +38,7 @@ import cs414.as5.btsaunde.garagesystem.security.Identity;
  * @author Bryan Saunders <btsaunde@gmail.com>
  * 
  */
-public class DashboardWindow extends JFrame {
+public class DashboardWindow extends JFrame implements GarageConfigurationListener {
 
 	/**
 	 * Default Serial ID.

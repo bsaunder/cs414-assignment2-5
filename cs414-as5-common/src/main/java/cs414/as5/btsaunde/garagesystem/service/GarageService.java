@@ -61,4 +61,23 @@ public interface GarageService extends Remote {
 	public abstract void setParkingFee(Double parkingFee)
 			throws RemoteException;
 
+	/**
+	 * Adds a Garage Listener.
+	 * 
+	 * @param listener
+	 *            Listener to Add
+	 * @throws RemoteException
+	 */
+	public abstract void addListener(GarageConfigurationListener listener)
+			throws RemoteException;
+
+	/**
+	 * Removes a Garage Listener
+	 * 
+	 * @param listener
+	 *            Listener to Remove
+	 * @throws RemoteException
+	 */
+	public abstract void removeListener(GarageConfigurationListener listener)
+			throws RemoteException;
 }

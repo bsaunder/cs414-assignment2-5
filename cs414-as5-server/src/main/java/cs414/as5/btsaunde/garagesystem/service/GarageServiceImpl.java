@@ -62,52 +62,68 @@ public class GarageServiceImpl extends UnicastRemoteObject implements GarageServ
 		return GarageServiceImpl.instance;
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#getTotalSpaces()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Integer getTotalSpaces() {
 		return this.config.getTotalSpaces();
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#setTotalSpaces(java.lang.Integer)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void setTotalSpaces(Integer totalSpaces) {
 		this.config.setTotalSpaces(totalSpaces);
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#getStatus()
+	/**
+	 * {@inheritDoc}
 	 */
 	public GarageStatus getStatus() {
 		return this.config.getStatus();
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#setStatus(cs414.as5.btsaunde.garagesystem.enums.GarageStatus)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void setStatus(GarageStatus status) {
 		this.config.setStatus(status);
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#getAvailableSpaces()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Integer getAvailableSpaces() {
 		return this.config.getAvailableSpaces();
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#getParkingFee()
+	/**
+	 * {@inheritDoc}
 	 */
 	public Double getParkingFee() {
 		return this.config.getParkingFee();
 	}
 
-	/* (non-Javadoc)
-	 * @see cs414.as5.btsaunde.garagesystem.service.GarageService#setParkingFee(java.lang.Double)
+	/**
+	 * {@inheritDoc}
 	 */
 	public void setParkingFee(Double parkingFee) {
 		this.config.setParkingFee(parkingFee);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void addListener(GarageConfigurationListener listener)
+			throws RemoteException {
+		this.config.addListener(listener);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void removeListener(GarageConfigurationListener listener)
+			throws RemoteException {
+		this.config.removeListener(listener);
 	}
 }

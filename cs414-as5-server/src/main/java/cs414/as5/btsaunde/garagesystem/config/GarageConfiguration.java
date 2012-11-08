@@ -3,8 +3,14 @@
  */
 package cs414.as5.btsaunde.garagesystem.config;
 
+import java.rmi.RemoteException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import cs414.as5.btsaunde.garagesystem.dao.TicketDao;
 import cs414.as5.btsaunde.garagesystem.enums.GarageStatus;
+import cs414.as5.btsaunde.garagesystem.service.GarageConfigurationListener;
 
 /**
  * @author Bryan Saunders <btsaunde@gmail.com>
@@ -16,6 +22,16 @@ public class GarageConfiguration {
 	 * Singleton Instance.
 	 */
 	private static GarageConfiguration instance;
+	
+	/**
+	 * Logger
+	 */
+	private Logger logger = Logger.getAnonymousLogger();
+	
+	/**
+	 * List of Listeners.
+	 */
+	private List<GarageConfigurationListener> listeners;
 
 	/**
 	 * Ticket DAO.
@@ -41,6 +57,8 @@ public class GarageConfiguration {
 	 * Singleton Constructor.
 	 */
 	private GarageConfiguration() {
+		this.listeners = new LinkedList<GarageConfigurationListener>();
+		
 		this.ticketDao = TicketDao.getInstance();
 
 		// Set Defaults
@@ -79,6 +97,7 @@ public class GarageConfiguration {
 	 */
 	public void setTotalSpaces(Integer totalSpaces) {
 		this.totalSpaces = totalSpaces;
+		this.notifyListeners();
 	}
 
 	/**
@@ -98,6 +117,7 @@ public class GarageConfiguration {
 	 */
 	public void setStatus(GarageStatus status) {
 		this.status = status;
+		this.notifyListeners();
 	}
 
 	/**
@@ -127,6 +147,41 @@ public class GarageConfiguration {
 	 */
 	public void setParkingFee(Double parkingFee) {
 		this.parkingFee = parkingFee;
+		this.notifyListeners();
+	}
+	
+	/**
+	 * Add a new Listener to the Configuration
+	 * 
+	 * @param listener Listener to Add
+	 */
+	public void addListener(GarageConfigurationListener listener){
+		this.listeners.add(listener);
+	}
+	
+	/**
+	 * Remove a Listener from the Configuration
+	 * 
+	 * @param listener Listener to Remove
+	 */
+	public void removeListener(GarageConfigurationListener listener){
+		this.listeners.remove(listener);
+	}
+	
+	/**
+	 * Notify Listeners of a Change.
+	 */
+	public void notifyListeners(){
+		this.logger.info("Notifying Listeners of Garage Change");
+		
+		for(GarageConfigurationListener listener : this.listeners){
+			try {
+				listener.update();
+			} catch (RemoteException e) {
+				this.logger.warning("Could Not Notify Listener");
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
